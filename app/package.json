@@ -50,7 +50,7 @@
     "vue-template-compiler": "^2.3.4",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "~2.11.1",
+    "webpack-dev-server": ">=3.1.11",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "ts-loader": "^7.0.3",
