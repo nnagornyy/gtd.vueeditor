@@ -17,7 +17,8 @@ const config = {
     },
     output: {
         path: path.join(__dirname),
-        filename: "./asset/script.js"
+        filename: "./asset/script.js",
+        publicPath: '/',
     },
     module: {
         rules: [
