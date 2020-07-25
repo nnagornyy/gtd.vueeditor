@@ -1,5 +1,16 @@
 <template>
-    <component :is="current"></component>
+    <div>
+        {{JSON.stringify(result)}}
+        <div class="block-wrapper" v-for="block in result">
+            <component :is="block.type" v-model="block.data"></component>
+        </div>
+        <div class="select-wrapper">
+            <select v-model="selected" style="display: block">
+                <option v-for="block in availableBlock">{{block}}</option>
+            </select>
+            <button @click="addBlock">Добавить блок</button>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -12,12 +23,24 @@
             console.log(obj, name);
             return Object.assign(obj, { [name]: () => import(/* webpackChunkName: "field" */ blockComponent[name] + '.vue') })
         }, {}),
-        // components:{
-        //     number :() => import(/* webpackChunkName: "field" */'./block/number')
-        // },
         data(){
             return {
-                current: 'number'
+                selected: '',
+                result:[],
+            }
+        },
+        methods:{
+            addBlock(){
+                let blueprint = {
+                    type: this.selected,
+                    data: {}
+                }
+                this.result.push(blueprint);
+            }
+        },
+        computed:{
+            availableBlock(){
+                return Object.keys(blockComponent);
             }
         }
     }

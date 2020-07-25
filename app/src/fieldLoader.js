@@ -1,6 +1,7 @@
 export default function () {
     return {
         vtext: './block/vtext',
-        number: './block/number'
+        number: './block/number',
+        vtextarea: './block/vtextarea'
     }
 }
