@@ -6,10 +6,8 @@
 </template>
 
 <script>
-    import baseField from "../baseField";
     export default {
         name: "vtext",
-        mixins:[baseField],
         data(){
             return{
                 data:{

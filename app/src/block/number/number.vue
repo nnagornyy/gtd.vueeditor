@@ -3,10 +3,8 @@
 </template>
 
 <script>
-    import base from '../baseField';
     export default {
         name: "number",
-        mixins: [base],
     }
 </script>
 
