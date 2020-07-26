@@ -1,12 +1,18 @@
 import webpack from 'webpack';
 const path = require('path');
 const fs = require('fs');
+import blocks from "./blockLoader";
+
 
 var plugins = [
     new webpack.ProvidePlugin({
         $: "jquery",
         jQuery: "jquery"
+    }),
+    new webpack.DefinePlugin({
+        BLOCK: JSON.stringify(blocks),
     })
+
 ];
 
 

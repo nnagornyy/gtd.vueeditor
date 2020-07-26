@@ -1,0 +1,10 @@
+{
+  "name": "Число",
+  "conf" : {
+    "foo": "bar",
+    "other": "some",
+    "array": [
+      "one", "two", "three"
+    ]
+  }
+}

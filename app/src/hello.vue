@@ -5,23 +5,20 @@
             <component :is="block.type" v-model="block.data"></component>
         </div>
         <div class="select-wrapper">
-            <select v-model="selected" style="display: block">
-                <option v-for="block in availableBlock">{{block}}</option>
-            </select>
-            <button @click="addBlock">Добавить блок</button>
+            <el-select v-model="selected" style="display: block">
+                <el-option :value="block.value" :label="block.label" v-for="block in availableBlock"></el-option>
+            </el-select>
+            <el-button type="primary" @click="addBlock" icon="el-icon-edit" circle></el-button>
         </div>
     </div>
 </template>
 
 <script>
-    import components from './fieldLoader';
-    import Vue from 'vue';
-    const blockComponent = components();
     export default {
         name: "hello",
-        components: Object.keys(blockComponent).reduce((obj, name) => {
-            console.log(obj, name);
-            return Object.assign(obj, { [name]: () => import(/* webpackChunkName: "field" */ blockComponent[name] + '.vue') })
+        components: BLOCK.reduce((obj, block) => {
+            console.log(block);
+            return Object.assign(obj, { [block.componentName]: () => import(/* webpackChunkName: "field" */ './'+block.filePath + '.vue') })
         }, {}),
         data(){
             return {
@@ -30,6 +27,9 @@
             }
         },
         methods:{
+            config(block){
+
+            },
             addBlock(){
                 let blueprint = {
                     type: this.selected,
@@ -40,7 +40,14 @@
         },
         computed:{
             availableBlock(){
-                return Object.keys(blockComponent);
+                let blocks = [];
+                BLOCK.forEach(function (b) {
+                    blocks.push({
+                        label: b.config.name,
+                        value: b.componentName
+                    })
+                })
+                return blocks;
             }
         }
     }

@@ -1,0 +1,10 @@
+{
+  "name": "Строка",
+  "conf" : {
+    "foo": "bar",
+    "other": "some",
+    "array": [
+      "one", "two", "three"
+    ]
+  }
+}
