@@ -24,13 +24,12 @@ const config = {
     output: {
         path: path.join(__dirname),
         filename: "./asset/script.js",
-        publicPath: '/',
     },
     module: {
         rules: [
             {
                 test: /\.js$/,
-                loader: 'babel-loader',
+                loader: path.resolve(__dirname, 'node_modules', 'babel-loader'),
                 options: {
                     babelrc: false,
                 }
@@ -73,6 +72,7 @@ const config = {
         ]
     },
     resolve: {
+        modules: [path.join(__dirname, '../../../node_modules'), 'node_modules'],
         alias: {
             'vue$': 'vue/dist/vue.esm.js'
         },

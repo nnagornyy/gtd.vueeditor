@@ -18,7 +18,7 @@
         name: "hello",
         components: BLOCK.reduce((obj, block) => {
             console.log(block);
-            return Object.assign(obj, { [block.componentName]: () => import(/* webpackChunkName: "field" */ './'+block.filePath + '.vue') })
+            return Object.assign(obj, { [block.componentName]: () =>  import(block.filePath + '.vue') })
         }, {}),
         data(){
             return {

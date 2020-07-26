@@ -3,10 +3,11 @@ const fs = require('fs');
 const find = require('find');
 
 console.log(path.join(__dirname));
-
-var blocks = recFindByExt(path.join(__dirname));
-
-function recFindByExt(base,ext,files,result)
+var blocks = [];
+//recFindByExt(path.join(__dirname),null, blocks);
+recFindByExt(path.join(__dirname), null, blocks);
+console.log(blocks);
+function recFindByExt(base,files,result)
 {
     files = files || fs.readdirSync(base)
     result = result || []
@@ -16,7 +17,7 @@ function recFindByExt(base,ext,files,result)
             var newbase = path.join(base,file)
             if ( fs.statSync(newbase).isDirectory() && newbase.indexOf('node_modules') === -1)
             {
-                result = recFindByExt(newbase,ext,fs.readdirSync(newbase),result)
+                result = recFindByExt(newbase,fs.readdirSync(newbase),result)
             }
             else
             {
@@ -26,6 +27,9 @@ function recFindByExt(base,ext,files,result)
                     let pathStr = path.resolve(base, file);
                     let rPath = path.relative(path.join(__dirname, 'src'), pathStr);
                     rPath = rPath.substr(0, rPath.lastIndexOf("."))
+                    if(!rPath.startsWith('./')){
+                        rPath = './'+rPath;
+                    }
                     let config = getConfig(base, file);
                     if(config.name){
                         result.push({

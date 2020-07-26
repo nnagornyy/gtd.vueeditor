@@ -1,4 +1,12 @@
 {
   "presets": ["babel-preset-latest"],
-  "plugins": ["syntax-dynamic-import"]
+  "plugins": [
+    "syntax-dynamic-import",
+    ["module-resolver", {
+      "root": ["../../../../"],
+      "alias": {
+        "external": "../../../"
+      }
+    }]
+  ]
 }
