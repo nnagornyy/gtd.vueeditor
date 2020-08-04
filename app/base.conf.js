@@ -63,8 +63,8 @@ const config = {
             },
             {
                 test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
-                loader: path.resolve(__dirname, 'node_modules', 'file-loader'),
-                // loader: 'file-loader',
+                //loader: path.resolve(__dirname, 'node_modules', 'file-loader'),
+                loader: 'file-loader',
                 query: {
                     name: '[hash:8].[ext]',
                 },

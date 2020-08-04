@@ -1,5 +1,6 @@
 {
   "name": "Число",
+  "type" : "number",
   "conf" : {
     "foo": "bar",
     "other": "some",

@@ -1,6 +1,8 @@
 <template>
     <div>
         {{JSON.stringify(result)}}
+        {{this.$root.$data.input}}
+        <input type="hidden" :value="formData" :name="this.$root.$data.input">
         <div class="block-wrapper" v-for="block in result">
             <component :is="block.type" v-model="block.data"></component>
         </div>
@@ -17,7 +19,6 @@
     export default {
         name: "hello",
         components: BLOCK.reduce((obj, block) => {
-            console.log(block);
             return Object.assign(obj, { [block.componentName]: () =>  import(block.filePath + '.vue') })
         }, {}),
         data(){
@@ -38,7 +39,13 @@
                 this.result.push(blueprint);
             }
         },
+        mounted() {
+            this.result = JSON.parse(this.$root.$data.val) || [];
+        },
         computed:{
+            formData(){
+              return JSON.stringify(this.result);
+            },
             availableBlock(){
                 let blocks = [];
                 BLOCK.forEach(function (b) {

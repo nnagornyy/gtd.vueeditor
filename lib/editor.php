@@ -12,8 +12,18 @@ class Editor {
 
     private $assetDir;
 
+    private $inputId;
+
+    private $value = [];
+
+    /**
+     * @var string
+     */
+    private $input;
+
     public function __construct($baseDir = "")
     {
+        $this->inputId = $this->generateInputId();
         if($baseDir === ""){
             $this->moduleDir = dirname(__DIR__);
             $this->moduleDir = str_replace($_SERVER['DOCUMENT_ROOT'],'', $this->moduleDir);
@@ -23,11 +33,17 @@ class Editor {
 
     public function initEditor(){
         $this->loadJsFiles();
-        echo '<div id="vue_editor"></div>';
+        $this->renderHtml();;
+    }
+
+    private function renderHtml(){
+        echo "<div id='$this->inputId'></div>";
+        echo "<script>document.gtdEditor('$this->value', '$this->input', '$this->inputId')</script>";
     }
 
     private function loadJsFiles(){
         $asset = Asset::getInstance();
+        $asset->addString('<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">');
         foreach ($this->getJsFile() as $jsFileName){
             $asset->addJs($this->assetDir.'/'.$jsFileName);
         }
@@ -52,5 +68,29 @@ class Editor {
             return $_SERVER['DOCUMENT_ROOT'].$this->assetDir;
         }
         return $this->assetDir;
+    }
+
+    private function generateInputId(){
+        return "gtd_vue_editor_".rand(0, 999);
+    }
+
+    /**
+     * @param array $input
+     */
+    public function setInput($input)
+    {
+        $this->input = $input;
+    }
+
+    /**
+     * @param string $value
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+    }
+
+    public static function getFields(){
+
     }
 }
