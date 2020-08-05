@@ -25,6 +25,7 @@
             return {
                 selected: '',
                 result:[],
+                allowBlock:[],
             }
         },
         methods:{
@@ -41,6 +42,7 @@
         },
         mounted() {
             this.result = JSON.parse(this.$root.$data.val) || [];
+            this.allowBlock = this.$root.$data.allowBlocks;
         },
         computed:{
             formData(){
@@ -48,7 +50,8 @@
             },
             availableBlock(){
                 let blocks = [];
-                BLOCK.forEach(function (b) {
+                BLOCK.forEach(b => {
+                    if(this.allowBlock.length === 0 || this.allowBlock.includes(b.componentName))
                     blocks.push({
                         label: b.config.name,
                         value: b.componentName

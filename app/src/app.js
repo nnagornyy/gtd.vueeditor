@@ -8,13 +8,14 @@ Vue.use(ElementUI, { locale });
 Vue.mixin(baseField);
 
 
-document.gtdEditor = (value, input_id, container) => {
+document.gtdEditor = (value, input_id, container, allowBlocks = []) => {
     let val = value || [];
     new Vue({
         data(){
             return {
                 val: val,
-                input: input_id
+                input: input_id,
+                allowBlocks: JSON.parse(allowBlocks)
             }
         },
         render: (h) => h(hello),

@@ -16,6 +16,8 @@ class Editor {
 
     private $value = [];
 
+    private $allowBlocks = [];
+
     /**
      * @var string
      */
@@ -38,7 +40,7 @@ class Editor {
 
     private function renderHtml(){
         echo "<div id='$this->inputId'></div>";
-        echo "<script>document.gtdEditor('$this->value', '$this->input', '$this->inputId')</script>";
+        echo "<script>document.gtdEditor('$this->value', '$this->input', '$this->inputId', '$this->allowBlocks')</script>";
     }
 
     private function loadJsFiles(){
@@ -92,5 +94,21 @@ class Editor {
 
     public static function getFields(){
 
+    }
+
+    /**
+     * @param array $allowBlocks
+     */
+    public function setAllowBlocks(array $allowBlocks): void
+    {
+        $this->allowBlocks = json_encode($allowBlocks);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllowBlocks(): array
+    {
+        return $this->allowBlocks;
     }
 }

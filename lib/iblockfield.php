@@ -96,10 +96,10 @@ class IBlockField {
     {
         global $APPLICATION;
         $editor = new Editor();
-        var_dump($value['VALUE']);
         if($value['VALUE']){
             $editor->setValue($value['VALUE']);
         }
+        $editor->setAllowBlocks($arProperty['USER_TYPE_SETTINGS']['ALLOW_BLOCK']);
         $editor->setInput($strHTMLControlName["VALUE"]);
         $editor->initEditor();
     }
