@@ -48,16 +48,17 @@ class Finder {
     public function find(string $where = 'all'): array
     {
         $arConfigPath = [];
+        $arConfig = [];
         $rootPaths = $this->getSearchPath($where);
         foreach ($rootPaths as $rootPath){
             $arConfigPath = array_merge($arConfigPath, $this->iterationFindConfigPath($rootPath));
         }
         if(!empty($arConfigPath)){
             foreach ($arConfigPath as $configPath){
-                $arConfigPath[] = $this->getBlockConfigByFile($configPath);
+                $arConfig[] = $this->getBlockConfigByFile($configPath);
             }
         }
-        return $arConfigPath;
+        return $arConfig;
     }
 
     /**

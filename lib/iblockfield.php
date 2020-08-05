@@ -3,6 +3,13 @@ namespace Gtd\VueEditor;
 
 use Bitrix\Iblock\PropertyTable;
 
+
+//@todo отрефачить класс , добавить шаблоны и тд
+
+/**
+ * Class IBlockField
+ * @package Gtd\VueEditor
+ */
 class IBlockField {
 
     const USER_TYPE = 'BlockEditor';
@@ -67,12 +74,21 @@ class IBlockField {
         $arPropertyFields = array(
             "HIDE" => array("FILTRABLE", "ROW_COUNT", "COL_COUNT", "DEFAULT_VALUE"), //will hide the field
             "SET" => array("FILTRABLE" => "N"), //if set then hidden field will get this value
-            "USER_TYPE_SETTINGS_TITLE" => "Настройки даты/времени"
+            "USER_TYPE_SETTINGS_TITLE" => "Доступные блоки"
         );
-
-        return '<tr>
-        <td>Длина поля ввода:</td>
-        <td><input type="text" size="5" name="'.$strHTMLControlName["NAME"].'[WIDTH]"></td>
+        $configFinder = new \Gtd\VueEditor\Block\Finder();
+        $blockConfig = $configFinder->find();
+        $option = "";
+        foreach ($blockConfig as $config){
+            $selected = in_array($config->getType(), $arProperty['USER_TYPE_SETTINGS']['ALLOW_BLOCK']) ? "selected" : "";
+            $option .= "<option ".$selected." value='".$config->getType()."'>".$config->getTitle()."</option>";
+        }
+        return '
+        <tr>
+            <td>Доступные блоки:</td>
+            <td>
+                <select size="10" multiple="multiple" name="'.$strHTMLControlName["NAME"].'[ALLOW_BLOCK][]">'.$option.'</select>
+            </td>
         </tr>';
     }
 
@@ -148,14 +164,15 @@ class IBlockField {
 
     public static function PrepareSettings($arProperty)
     {
-        $settings = $arProperty['USER_TYPE_SETTINGS'];
-        $newsettings = array();
-
-        foreach (array('DISABLE_CHANGE', 'ENABLE_SORT_BUTTONS','SETTINGS_NAME') as $val){
-            $newsettings[$val] = !empty($settings[$val]) ? $settings[$val] : '';
-        }
-
-        return array('USER_TYPE_SETTINGS' => $newsettings);
+//        $settings = $arProperty['USER_TYPE_SETTINGS'];
+//        $newsettings = array();
+//
+//        foreach (array('DISABLE_CHANGE', 'ENABLE_SORT_BUTTONS','SETTINGS_NAME') as $val){
+//            $newsettings[$val] = !empty($settings[$val]) ? $settings[$val] : '';
+//        }
+//
+//        return array('USER_TYPE_SETTINGS' => $newsettings);
+        return  $arProperty['USER_TYPE_SETTINGS'];
     }
 
 
