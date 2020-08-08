@@ -1,5 +1,5 @@
 {
-  "name": "gtd/vueeditor",
+  "name": "nnagornyy/vueeditor",
   "type": "bitrix-module",
   "description": "Блочный редактор контента для 1с-bitrix",
   "keywords": ["bitrix","editor", "vueeditor"],
@@ -14,6 +14,8 @@
     }
   ],
   "require": {
-    "php": ">=7.0.0"
+    "php": ">=7.0.0",
+    "ext-json": "*",
+    "composer/installers": "~1"
   }
 }
