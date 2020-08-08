@@ -1,0 +1,19 @@
+{
+  "name": "gtd/vueeditor",
+  "type": "bitrix-module",
+  "description": "Блочный редактор контента для 1с-bitrix",
+  "keywords": ["bitrix","editor", "vueeditor"],
+  "homepage": "https://github.com/nnagornyy/gtd.vueeditor",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Nikolay Nagornyy",
+      "email": "n.nagornyy@gmail.com",
+      "homepage": "https://www.facebook.com/n.nagornyy/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.0.0"
+  }
+}
