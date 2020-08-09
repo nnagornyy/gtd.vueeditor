@@ -99,7 +99,9 @@ class IBlockField {
         if($value['VALUE']){
             $editor->setValue($value['VALUE']);
         }
-        $editor->setAllowBlocks($arProperty['USER_TYPE_SETTINGS']['ALLOW_BLOCK']);
+        if(!empty($arProperty['USER_TYPE_SETTINGS']['ALLOW_BLOCK'])){
+            $editor->setAllowBlocks($arProperty['USER_TYPE_SETTINGS']['ALLOW_BLOCK']);
+        }
         $editor->setInput($strHTMLControlName["VALUE"]);
         $editor->initEditor();
     }
