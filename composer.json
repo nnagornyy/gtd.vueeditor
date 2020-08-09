@@ -1,5 +1,5 @@
 {
-  "name": "nnagornyy/vueeditor",
+  "name": "nnagornyy/gtd.vueeditor",
   "type": "bitrix-module",
   "description": "Блочный редактор контента для 1с-bitrix",
   "keywords": ["bitrix","editor", "vueeditor"],
