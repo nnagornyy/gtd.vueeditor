@@ -1,10 +1,8 @@
 <template>
     <div>
-        {{JSON.stringify(result)}}
-        {{this.$root.$data.input}}
-        <input type="hidden" :value="formData" :name="this.$root.$data.input">
+        <input type="hidden" :value='formData' :name="inputName">
         <div class="block-wrapper" v-for="block in result">
-            <component :is="block.type" v-model="block.data"></component>
+            <component :is="block.type" :blockValue="block.data"></component>
         </div>
         <div class="select-wrapper">
             <el-select v-model="selected" style="display: block">
@@ -24,6 +22,7 @@
         data(){
             return {
                 selected: '',
+                inputName: '',
                 result:[],
                 allowBlock:[],
             }
@@ -41,8 +40,9 @@
             }
         },
         mounted() {
-            this.result = JSON.parse(this.$root.$data.val) || [];
+            this.result = this.$root.$data.val || [];
             this.allowBlock = this.$root.$data.allowBlocks;
+            this.inputName = this.$root.$data.inputName;
         },
         computed:{
             formData(){

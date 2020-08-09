@@ -20,7 +20,7 @@ class Finder {
     {
         return [
             'default' => $_SERVER['DOCUMENT_ROOT'].'/local/modules/gtd.vueeditor/app/src/block',
-            'external' => $_SERVER['DOCUMENT_ROOT'].'/local/modules/gtd.vueeditor/app/src/ex_block',
+            'external' => $_SERVER['DOCUMENT_ROOT'].'/local/modules/gtd.vueeditor/app/src/ext_block',
         ];
     }
 

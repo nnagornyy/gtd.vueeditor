@@ -102,8 +102,9 @@ class IBlockField {
         if(!empty($arProperty['USER_TYPE_SETTINGS']['ALLOW_BLOCK'])){
             $editor->setAllowBlocks($arProperty['USER_TYPE_SETTINGS']['ALLOW_BLOCK']);
         }
-        $editor->setInput($strHTMLControlName["VALUE"]);
-        $editor->initEditor();
+        $editor
+            ->setInputName($strHTMLControlName["VALUE"])
+            ->initEditor();
     }
 
     public static function ConvertToDB($arProperty, $value)

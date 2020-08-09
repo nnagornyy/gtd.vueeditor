@@ -12,9 +12,11 @@ class Editor {
 
     private $assetDir;
 
-    private $inputId;
+    private $app_id;
 
-    private $value = [];
+    private $input_name;
+
+    private $value = "[]";
 
     private $allowBlocks = [];
 
@@ -25,7 +27,7 @@ class Editor {
 
     public function __construct($baseDir = "")
     {
-        $this->inputId = $this->generateInputId();
+        $this->app_id = $this->generateAppId();
         if($baseDir === ""){
             $this->moduleDir = dirname(__DIR__);
             $this->moduleDir = str_replace($_SERVER['DOCUMENT_ROOT'],'', $this->moduleDir);
@@ -35,12 +37,19 @@ class Editor {
 
     public function initEditor(){
         $this->loadJsFiles();
-        $this->renderHtml();;
+        $this->renderHtml();
     }
 
     private function renderHtml(){
-        echo "<div id='$this->inputId'></div>";
-        echo "<script>document.gtdEditor('$this->value', '$this->input', '$this->inputId', '$this->allowBlocks')</script>";
+        echo "<div id='$this->app_id'></div>";
+        $this->renderTemplate('editor_script');
+    }
+
+    private function renderTemplate($name){
+        $path = __DIR__.'/templates/'.$name.'.php';
+        if(is_file($path)){
+            include $path;
+        }
     }
 
     private function loadJsFiles(){
@@ -72,17 +81,10 @@ class Editor {
         return $this->assetDir;
     }
 
-    private function generateInputId(){
+    private function generateAppId(){
         return "gtd_vue_editor_".rand(0, 999);
     }
 
-    /**
-     * @param array $input
-     */
-    public function setInput($input)
-    {
-        $this->input = $input;
-    }
 
     /**
      * @param string $value
@@ -90,25 +92,56 @@ class Editor {
     public function setValue($value)
     {
         $this->value = $value;
+        return $this;
     }
 
-    public static function getFields(){
+    /**
+     * @return string
+     */
+    public function getValue(): string
+    {
+        return json_encode($this->value);
+    }
 
+    /**
+     * @return string
+     */
+    public function getAppId(): string
+    {
+        return $this->app_id;
     }
 
     /**
      * @param array $allowBlocks
      */
-    public function setAllowBlocks(array $allowBlocks): void
+    public function setAllowBlocks(array $allowBlocks): Editor
     {
-        $this->allowBlocks = json_encode($allowBlocks);
+        $this->allowBlocks = $allowBlocks;
+        return $this;
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getAllowBlocks(): array
+    public function getAllowBlocks(): string
     {
-        return $this->allowBlocks;
+        return json_encode($this->allowBlocks);
+    }
+
+    /**
+     * @param mixed $input_name
+     */
+    public function setInputName($input_name): Editor
+    {
+        $this->input_name = $input_name;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInputName()
+    {
+        return $this->input_name;
     }
 }

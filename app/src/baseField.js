@@ -1,4 +1,5 @@
 export default {
+    props: ['blockValue'],
     data(){
         return {
             data:{
@@ -17,6 +18,11 @@ export default {
             handler(){
                 this.$emit('input', this.data)
             }
+        }
+    },
+    mounted() {
+        if(this.blockValue){
+            this.data = this.blockValue
         }
     },
     computed:{

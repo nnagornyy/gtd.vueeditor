@@ -45,8 +45,13 @@ class gtd_vueeditor extends CModule {
     }
 
     private function createExtBlockDir(){
+        Loader::includeModule($this->MODULE_ID);
+        $extBlockPath = \Gtd\VueEditor\Block\Finder::getExtBlockPath();
         if (!file_exists($_SERVER['DOCUMENT_ROOT'].'/local/vueeditor')) {
             mkdir($_SERVER['DOCUMENT_ROOT'].'/local/vueeditor', 0777, true);
+        }
+        if (!file_exists($extBlockPath)) {
+            mkdir($extBlockPath, 0777, true);
         }
     }
 

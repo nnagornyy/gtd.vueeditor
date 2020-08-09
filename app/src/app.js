@@ -8,16 +8,17 @@ Vue.use(ElementUI, { locale });
 Vue.mixin(baseField);
 
 
-document.gtdEditor = (value, input_id, container, allowBlocks = []) => {
-    let val = value || [];
+document.gtdEditor = ($value, input_name, app_id, allowBlocks = []) => {
+    let value = JSON.parse($value) || [];
+    let block = allowBlocks.length > 0 ? JSON.parse(allowBlocks) : []
     new Vue({
         data(){
             return {
-                val: val,
-                input: input_id,
-                allowBlocks: JSON.parse(allowBlocks)
+                val: value,
+                inputName: input_name,
+                allowBlocks: block
             }
         },
         render: (h) => h(hello),
-    }).$mount('#' + container)                                                     // Если должен быть найден один элемент
+    }).$mount('#' + app_id)                                                     // Если должен быть найден один элемент
 }
