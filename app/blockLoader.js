@@ -1,10 +1,14 @@
 const path = require('path');
 const fs = require('fs');
 const find = require('find');
+const ncp = require('ncp');
 
 console.log(path.join(__dirname));
 var blocks = [];
-//recFindByExt(path.join(__dirname),null, blocks);
+
+//copy ext block
+ncp(path.join(__dirname,'../../../vueeditor/'), path.join(__dirname,'src/ext_block'));
+
 recFindByExt(path.join(__dirname), null, blocks);
 console.log(blocks);
 function recFindByExt(base,files,result)

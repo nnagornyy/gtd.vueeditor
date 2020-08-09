@@ -23,6 +23,7 @@ class gtd_vueeditor extends CModule {
     {
         $this->InstallEvents();
         RegisterModule($this->MODULE_ID);
+        $this->createExtBlockDir();
     }
 
     public function InstallEvents()
@@ -41,6 +42,12 @@ class gtd_vueeditor extends CModule {
     public function DoUninstall()
     {
         UnRegisterModule($this->MODULE_ID);
+    }
+
+    private function createExtBlockDir(){
+        if (!file_exists($_SERVER['DOCUMENT_ROOT'].'/local/vueeditor')) {
+            mkdir($_SERVER['DOCUMENT_ROOT'].'/local/vueeditor', 0777, true);
+        }
     }
 
 }

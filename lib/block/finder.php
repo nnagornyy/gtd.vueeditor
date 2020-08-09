@@ -24,6 +24,13 @@ class Finder {
         ];
     }
 
+    public static function getExtBlockPath():string
+    {
+        $ob = new self();
+        $paths = $ob->getBlockPaths();
+        return $paths['external'];
+    }
+
     /**
      * @param string $where
      * @return array|string[]
