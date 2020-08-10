@@ -7,7 +7,7 @@ import locale from 'element-ui/lib/locale/lang/ru-RU'
 Vue.use(ElementUI, { locale });
 Vue.mixin(baseField);
 
-document.gtdEditor = ($value, input_name, app_id, allowBlocks = []) => {
+document.gtdEditor = ($value, input_name, app_id, allowBlocks = [], propId=0) => {
     let value = JSON.parse($value) || [];
     let block = allowBlocks.length > 0 ? JSON.parse(allowBlocks) : []
     new Vue({
@@ -19,5 +19,13 @@ document.gtdEditor = ($value, input_name, app_id, allowBlocks = []) => {
             }
         },
         render: (h) => h(hello),
+        mounted() {
+            let appTr = document.getElementById('tr_PROPERTY_'+propId);
+            if(appTr){
+                appTr.childNodes[3].colSpan = "2";
+                appTr.childNodes[3].width = "100%";
+                appTr.childNodes[1].remove();
+            }
+        }
     }).$mount('#' + app_id)                                                     // Если должен быть найден один элемент
 }

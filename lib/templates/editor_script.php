@@ -3,6 +3,7 @@
         <?=$this->getValue()?>,
         '<?=$this->getInputName()?>',
         '<?=$this->getAppId()?>',
-        '<?=$this->getAllowBlocks()?>'
+        '<?=$this->getAllowBlocks()?>',
+        '<?=$this->getPropertyId()?>'
     );
 </script>

@@ -14,6 +14,8 @@ class Editor {
 
     private $app_id;
 
+    private $property_id;
+
     private $input_name;
 
     private $value = '[]';
@@ -143,5 +145,21 @@ class Editor {
     public function getInputName()
     {
         return $this->input_name;
+    }
+
+    /**
+     * @param mixed $property_id
+     */
+    public function setPropertyId($property_id)
+    {
+        $this->property_id = $property_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPropertyId()
+    {
+        return $this->property_id;
     }
 }

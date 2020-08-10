@@ -96,6 +96,7 @@ class IBlockField {
     {
         global $APPLICATION;
         $editor = new Editor();
+        $editor->setPropertyId($arProperty['ID']);
         if($value['VALUE']){
             $editor->setValue($value['VALUE']);
         }
