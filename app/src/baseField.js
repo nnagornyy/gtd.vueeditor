@@ -7,11 +7,6 @@ export default {
             }
         }
     },
-    methods: {
-        foo: function () {
-            console.log('foo')
-        }
-    },
     watch: {
         data: {
             deep: true,
@@ -20,14 +15,9 @@ export default {
             }
         }
     },
-    mounted() {
-        if(this.blockValue){
+    created() {
+        if(this.blockValue && Object.keys(this.blockValue).length !== 0){
             this.data = this.blockValue
-        }
-    },
-    computed:{
-        test(){
-            return 'я из миксины';
         }
     }
 }

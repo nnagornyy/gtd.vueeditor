@@ -2,7 +2,7 @@
     <div>
         <input type="hidden" :value='formData' :name="inputName">
         <div class="block-wrapper" v-for="block in result">
-            <component :is="block.type" :blockValue="block.data"></component>
+            <component :is="block.type" v-model="block.data" :blockValue="block.data"></component>
         </div>
         <div class="select-wrapper">
             <el-select v-model="selected" style="display: block">

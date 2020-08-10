@@ -16,7 +16,7 @@ class Editor {
 
     private $input_name;
 
-    private $value = "[]";
+    private $value = '[]';
 
     private $allowBlocks = [];
 

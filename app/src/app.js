@@ -7,7 +7,6 @@ import locale from 'element-ui/lib/locale/lang/ru-RU'
 Vue.use(ElementUI, { locale });
 Vue.mixin(baseField);
 
-
 document.gtdEditor = ($value, input_name, app_id, allowBlocks = []) => {
     let value = JSON.parse($value) || [];
     let block = allowBlocks.length > 0 ? JSON.parse(allowBlocks) : []
