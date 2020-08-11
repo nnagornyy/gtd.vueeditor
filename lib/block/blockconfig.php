@@ -14,7 +14,15 @@ class BlockConfig{
      */
     private ?string $type;
 
-    private object $params;
+    /**
+     * @var string
+     */
+    private ?string $handler;
+
+    /**
+     * @var \stdClass
+     */
+    private $params;
 
     /**
      * BlockConfig constructor.
@@ -25,6 +33,7 @@ class BlockConfig{
         $this->setTitle($json->name);
         $this->setType($json->type);
         $this->setParams($json->conf);
+        $this->setHandler($json->handler);
     }
 
     /**
@@ -68,11 +77,27 @@ class BlockConfig{
     }
 
     /**
-     * @param string[] $params
+     * @param \stdClass $params
      */
     public function setParams(\stdClass $params): void
     {
         $this->params = $params;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getHandler(): ?string
+    {
+        return $this->handler;
+    }
+
+    /**
+     * @param ?string $handler
+     */
+    public function setHandler(?string $handler): void
+    {
+        $this->handler = $handler;
     }
 
 }
