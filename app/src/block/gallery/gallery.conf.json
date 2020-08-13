@@ -1,0 +1,12 @@
+{
+  "name": "Список изображений с описанием",
+  "type": "galleryWithDescription",
+  "handler": "",
+  "conf" : {
+    "foo": "bar",
+    "other": "some",
+    "array": [
+      "one", "two", "three"
+    ]
+  }
+}
