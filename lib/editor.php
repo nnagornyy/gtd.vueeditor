@@ -48,7 +48,7 @@ class Editor {
     }
 
     private function renderTemplate($name){
-        $path = __DIR__.'/templates/'.$name.'.php';
+        $path = __DIR__ . '/templates/' .$name.'.php';
         if(is_file($path)){
             include $path;
         }

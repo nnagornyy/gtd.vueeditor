@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import draggable from 'vuedraggable'
 export default {
   name: "gallery",
@@ -52,7 +53,11 @@ export default {
       this.data.push(item);
     },
     deleteItem(i){
-      this.data.splice(i, 1);
+      let fileId = this.data[i].imageId;
+      axios.get('/local/modules/gtd.vueeditor/service/delete_file.php?id=' + fileId)
+      .then(res => {
+        this.data.splice(i, 1);
+      })
     }
   }
 
