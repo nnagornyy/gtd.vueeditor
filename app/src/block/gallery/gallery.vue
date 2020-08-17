@@ -48,12 +48,17 @@ export default {
   data() {
     return {
       data:{
-        type:"",
+        viewType:"",
         images:[]
       },
       options:[
         {
-          label
+          label: 'Плитка',
+          value: 'tile'
+        },
+        {
+          label: 'Слайдер 1',
+          value: 'slider'
         }
       ]
     };
