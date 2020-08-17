@@ -3,17 +3,19 @@
       <el-row class="main-row">
         <el-col class="content-wrapper" :span="18">
           <input type="hidden" :value='formData' :name="inputName">
-          <el-card shadow="hover" class="block-wrapper" v-for="(block, i) in result">
-            <el-row class="block-header">
-              <el-col :span="20">
-                <el-divider class="block-header-name" content-position="left">{{block.name}}</el-divider>
-              </el-col>
-              <el-col :span="4">
-                <span class="delete-btn" @click="deleteBlock(i)"><i class="el-icon-delete"></i></span>
-              </el-col>
-            </el-row>
-            <component :is="block.type" v-model="block.data" :blockValue="block.data"></component>
-          </el-card>
+          <draggable v-model="result" group="block" @start="drag=true" @end="drag=false">
+            <el-card shadow="hover" class="block-wrapper" v-for="(block, i) in result">
+              <el-row class="block-header">
+                <el-col :span="20">
+                  <el-divider class="block-header-name" content-position="left">{{block.name}}</el-divider>
+                </el-col>
+                <el-col :span="4">
+                  <span class="delete-btn" @click="deleteBlock(i)"><i class="el-icon-delete"></i></span>
+                </el-col>
+              </el-row>
+              <component :is="block.type" v-model="block.data" :blockValue="block.data"></component>
+            </el-card>
+          </draggable>
         </el-col>
         <el-col class="add-block-wrapper" :span="6">
           <div class="add-block-btn" @click="addBlock(block.value, block.label)" v-for="block in availableBlock">
@@ -25,57 +27,58 @@
 </template>
 
 <script>
-    export default {
-        name: "hello",
-        components: BLOCK.reduce((obj, block) => {
-            return Object.assign(obj, { [block.componentName]: () =>  import(block.filePath + '.vue') })
-        }, {}),
-        data(){
-            return {
-                selected: '',
-                inputName: '',
-                result:[],
-                allowBlock:[],
-            }
-        },
-        methods:{
-            config(block){
+  import draggable from 'vuedraggable'
+  export default {
+    name: "hello",
+    components: BLOCK.reduce((obj, block) => {
+        return Object.assign(obj, { [block.componentName]: () =>  import(block.filePath + '.vue') })
+    }, {draggable}),
+    data(){
+        return {
+            selected: '',
+            inputName: '',
+            result:[],
+            allowBlock:[],
+        }
+    },
+    methods:{
+        config(block){
 
-            },
-            deleteBlock(i){
-              this.result.splice(i, 1);
-            },
-            addBlock(type, name = ""){
-                let blueprint = {
-                    name: name,
-                    type: type,
-                    data: {}
-                }
-                this.result.push(blueprint);
+        },
+        deleteBlock(i){
+          this.result.splice(i, 1);
+        },
+        addBlock(type, name = ""){
+            let blueprint = {
+                name: name,
+                type: type,
+                data: {}
             }
+            this.result.push(blueprint);
+        }
+    },
+    mounted() {
+        this.result = this.$root.$data.val || [];
+        this.allowBlock = this.$root.$data.allowBlocks;
+        this.inputName = this.$root.$data.inputName;
+    },
+    computed:{
+        formData(){
+          return JSON.stringify(this.result);
         },
-        mounted() {
-            this.result = this.$root.$data.val || [];
-            this.allowBlock = this.$root.$data.allowBlocks;
-            this.inputName = this.$root.$data.inputName;
-        },
-        computed:{
-            formData(){
-              return JSON.stringify(this.result);
-            },
-            availableBlock(){
-                let blocks = [];
-                BLOCK.forEach(b => {
-                    if(this.allowBlock.length === 0 || this.allowBlock.includes(b.componentName))
-                    blocks.push({
-                        label: b.config.name,
-                        value: b.componentName
-                    })
+        availableBlock(){
+            let blocks = [];
+            BLOCK.forEach(b => {
+                if(this.allowBlock.length === 0 || this.allowBlock.includes(b.componentName))
+                blocks.push({
+                    label: b.config.name,
+                    value: b.componentName
                 })
-                return blocks;
-            }
+            })
+            return blocks;
         }
     }
+  }
 </script>
 <style>
   .block-header{
