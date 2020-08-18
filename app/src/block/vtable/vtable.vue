@@ -1,22 +1,22 @@
 <template>
   <div>
-    <el-row>
-      <el-col :span="20" style="position: relative">
-        <div id="vtdr" @click="deleteRow">del row</div>
-        <div id="vtdc">del col</div>
+    <el-row class="block-wrapper">
+      <el-col class="table-wrapper" :span="20" style="position: relative">
+        <div ref="delete-row" class="delete-row delete-btn" @click="deleteRow">-</div>
+        <div ref="delete-col" class="delete-col delete-btn" @click="deleteCol">-</div>
         <table cellpadding="0" cellspacing="" class="vtable-body">
           <tr v-for="(row, ir) in data">
             <td @blur="onEdit($event, ir, ic)" @mouseover="onHover($event, ir, ic)" contenteditable v-html="data[ir][ic]" v-for="(col, ic) in row">{{ir}} - {{ic}}</td>
           </tr>
         </table>
       </el-col>
-      <el-col :span="4">
+      <el-col class="table-right-col" :span="4">
         <div class="add-column" @click="addColumn()">+</div>
       </el-col>
     </el-row>
     <el-row>
       <el-col>
-        <div class="add-column" @click="addRow()">+</div>
+        <div class="add-row" @click="addRow()">+</div>
       </el-col>
     </el-row>
   </div>
@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       data:[
-        [['']]
+        ['']
       ],
       lastCol:0,
       lastRow:0
@@ -41,10 +41,12 @@ export default {
     },
     onHover(evt, r, c){
       let curTarget = evt.currentTarget;
-      let offsetCol = curTarget.offsetLeft + (curTarget.clientWidth / 2);
-      let offsetRow = curTarget.offsetTop + (curTarget.clientHeight / 2);
-      document.getElementById('vtdr').style.top = offsetRow + "px";
-      document.getElementById('vtdc').style.left = offsetCol + "px";
+      let offsetCol = curTarget.offsetLeft + (curTarget.clientWidth / 2) - 10;
+      let offsetRow = curTarget.offsetTop + (curTarget.clientHeight / 2) - 10;
+
+      this.$refs['delete-row'].style.transform = `translate3d(0, ${offsetRow}px, 0)`;
+      this.$refs['delete-col'].style.transform =`translate3d(${offsetCol}px ,0 ,0)`;
+
       this.lastCol = c;
       this.lastRow = r;
     },
@@ -57,18 +59,80 @@ export default {
     deleteRow(){
       this.data.splice(this.lastRow, 1);
     },
-    deleteCol(){}
+    deleteCol(){
+      this.data.forEach(r => r.splice(this.lastCol,1));
+    }
   }
 
 }
 </script>
 
 <style scoped>
-  #vtdr{
-    position: absolute;
+  .block-wrapper{
+    display: flex;
   }
-  #vtdc{
+  .block-wrapper:hover .add-row,
+  .block-wrapper:hover .add-column {
+    display: block;
+  }
+  .table-wrapper:hover .delete-btn{
+    display: block;
+  }
+  .table-right-col{
+    display: flex;
+    align-items: center;
+  }
+  .add-row{
+    width: 20px;
+    height: 20px;
+    display: none;
+    background: #8bb100;
+    border-radius: 50%;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+    margin: auto;
+    font-size: 20px;
+    line-height: 20px;
+    margin-top: 12px;
+    right: auto;
+    transition: transform .3s ease;
+  }
+  .add-column{
+    width: 20px;
+    height: 20px;
+    background: #8bb100;
+    border-radius: 50%;
+    text-align: center;
+    display: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 20px;
+    margin-left: 20px;
+    right: auto;
+    transition: transform .3s ease;
+  }
+  .delete-btn{
+    width: 20px;
+    height: 20px;
+    background: #d22525;
+    border-radius: 50%;
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+    line-height: 15px;
+    display: none;
+    right: auto;
+    transition: transform .3s ease;
+  }
+  .delete-row{
     position: absolute;
+    left: -9px;
+  }
+  .delete-col{
+    position: absolute;
+    top: -9px;
   }
   .vtable-body{
     border: 1px solid #ebeef5;
