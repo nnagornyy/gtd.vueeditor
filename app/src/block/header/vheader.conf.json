@@ -1,0 +1,11 @@
+{
+  "name": "Заголовок",
+  "type": "vheader",
+  "conf" : {
+    "foo": "bar",
+    "other": "some",
+    "array": [
+      "one", "two", "three"
+    ]
+  }
+}
