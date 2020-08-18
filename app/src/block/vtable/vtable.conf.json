@@ -1,0 +1,12 @@
+{
+  "name": "таблица",
+  "type": "vtable",
+  "handler": "",
+  "conf" : {
+    "foo": "bar",
+    "other": "some",
+    "array": [
+      "one", "two", "three"
+    ]
+  }
+}
