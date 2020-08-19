@@ -1,0 +1,11 @@
+{
+  "name": " YouTube видео",
+  "type" : "vyoutube",
+  "conf" : {
+    "foo": "bar",
+    "other": "some",
+    "array": [
+      "one", "two", "three"
+    ]
+  }
+}
