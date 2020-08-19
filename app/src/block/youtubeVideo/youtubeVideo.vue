@@ -1,6 +1,6 @@
 <template>
   <div>
-    <youtube :fit-parent="true" :resize="true" video-id="data.videoId" ref="youtube"></youtube>
+    <youtube :fit-parent="true" :resize="true" :video-id="data.videoId" ref="youtube"></youtube>
     <el-row :gutter="20" style="margin-top: 20px">
       <el-col :span="20">
         <el-input v-model="url"></el-input>
