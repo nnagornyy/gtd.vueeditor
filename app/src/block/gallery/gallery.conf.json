@@ -1,6 +1,6 @@
 {
   "name": "Список изображений с описанием",
-  "type": "galleryWithDescription",
+  "type": "gallery",
   "handler": "",
   "conf" : {
     "foo": "bar",

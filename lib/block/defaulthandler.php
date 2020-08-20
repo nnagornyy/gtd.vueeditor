@@ -8,7 +8,7 @@ class DefaultHandler implements Handler{
      */
     private $block;
 
-    public function getData(): array
+    public function getData()
     {
         return $this->block->getData();
     }
