@@ -3,7 +3,7 @@
       <el-col :span="18">
         <el-input v-model="data.value"></el-input>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="6" v-if="selectSize">
         <el-select v-model="data.type" placeholder="Select">
           <el-option
               v-for="type in headerType"
@@ -19,6 +19,12 @@
 <script>
     export default {
       name: "vheader",
+      props: {
+        selectSize: {
+          type: Boolean,
+          default: true
+        }
+      },
       data(){
         return{
           data:{
