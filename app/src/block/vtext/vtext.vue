@@ -6,7 +6,7 @@
     import { VueEditor } from "vue2-editor";
     export default {
       components:{VueEditor},
-      name: "number",
+      name: "vtext",
       data(){
         return {
           data:"",

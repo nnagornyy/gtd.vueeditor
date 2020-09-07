@@ -175,4 +175,7 @@
   .add-block-text{
 
   }
+  .el-upload .adm-input-file{
+    display: none!important;
+  }
 </style>

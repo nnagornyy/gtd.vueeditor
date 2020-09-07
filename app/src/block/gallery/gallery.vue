@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-select v-model="data.viewType" placeholder="Select">
+    <el-select v-if="selectType" v-model="data.viewType" placeholder="Select">
       <el-option
           v-for="item in options"
           :key="item.value"
@@ -20,8 +20,8 @@
                 :src="item.src"
                 fit="cover">
             </el-image>
-            <el-input placeholder="Название" v-model="data.images[i].title"></el-input>
-            <el-input placeholder="Описание" v-model="data.images[i].description"></el-input>
+            <el-input v-if="showImageHeader" placeholder="Название" v-model="data.images[i].title"></el-input>
+            <el-input v-if="showImageDescription" placeholder="Описание" v-model="data.images[i].description"></el-input>
           </el-card>
         </el-col>
       </draggable>
@@ -45,6 +45,20 @@ import draggable from 'vuedraggable'
 export default {
   name: "gallery",
   components:{draggable},
+  props:{
+    selectType: {
+      type: Boolean,
+      default: true
+    },
+    showImageHeader:{
+      type: Boolean,
+      default: true
+    },
+    showImageDescription:{
+      type: Boolean,
+      default: true
+    },
+  },
   data() {
     return {
       data:{

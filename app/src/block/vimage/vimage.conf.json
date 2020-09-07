@@ -1,6 +1,6 @@
 {
   "name": "Изображение",
-  "type": "image",
+  "type": "vimage",
   "handler": "",
   "conf" : {}
 }

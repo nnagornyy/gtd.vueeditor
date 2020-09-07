@@ -16,7 +16,7 @@
 import axios from 'axios';
 import draggable from 'vuedraggable'
 export default {
-  name: "gallery",
+  name: "vimage",
   components:{draggable},
   data() {
     return {
