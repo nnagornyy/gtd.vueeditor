@@ -6,7 +6,7 @@
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
     >
-      <img v-if="data.src" :src="data.src" class="avatar">
+      <img v-if="editorData.src" :src="editorData.src" class="avatar">
       <i v-else class="el-icon-plus avatar-uploader-icon"></i>
     </el-upload>
   </div>
@@ -16,26 +16,32 @@
 import axios from 'axios';
 import draggable from 'vuedraggable'
 export default {
+  props:['value'],
   name: "vimage",
   components:{draggable},
   data() {
     return {
-      data:{
-        id: "",
+      editorData:{
+        id: 0,
         src:""
       }
     };
   },
+  watch:{
+    value(){
+      this.editorData = this.value;
+    }
+  },
   methods: {
     handleAvatarSuccess(res, file) {
-      this.data.id = res.id;
-      this.data.src = res.src;
+      this.editorData.id = res.id;
+      this.editorData.src = res.src;
     },
     deleteItem(i){
-      let fileId = this.data.images[i].imageId;
+      let fileId = this.editorData.images[i].imageId;
       axios.get('/local/modules/gtd.vueeditor/service/delete_file.php?id=' + fileId)
       .then(res => {
-        this.data.images.splice(i, 1);
+        this.editorData.images.splice(i, 1);
       })
     }
   }

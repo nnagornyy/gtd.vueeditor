@@ -18,8 +18,19 @@
           </draggable>
         </el-col>
         <el-col class="add-block-wrapper" :span="6">
-          <div class="add-block-btn" @click="addBlock(block.value, block.label)" v-for="block in availableBlock">
-            <span class="add-block-text">{{block.label}}</span>
+          <div  v-for="block in availableBlock">
+            <el-popover v-if="block.about" :open-delay="1000" placement="right" width="400" trigger="hover">
+              <el-image
+                  style="width: 500px; height: 500px"
+                  :src="block.about.img"
+                  :fit="fill"></el-image>
+              <div slot="reference" class="add-block-btn" @click="addBlock(block.value, block.label)">
+                <span class="add-block-text">{{block.label}}</span>
+              </div>
+            </el-popover>
+            <div v-else slot="reference" class="add-block-btn" @click="addBlock(block.value, block.label)">
+              <span class="add-block-text">{{block.label}}</span>
+            </div>
           </div>
         </el-col>
       </el-row>
@@ -68,11 +79,13 @@
         },
         availableBlock(){
             let blocks = [];
+            debugger;
             BLOCK.forEach(b => {
                 if(this.allowBlock.length === 0 || this.allowBlock.includes(b.componentName))
                 blocks.push({
                     label: b.config.name,
-                    value: b.componentName
+                    value: b.componentName,
+                    about: b.config.conf.about,
                 })
             })
             return blocks;

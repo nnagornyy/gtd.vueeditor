@@ -1,5 +1,5 @@
 <template>
-  <vue-editor v-model="data" :editorToolbar="customToolbar"></vue-editor>
+  <vue-editor v-model="editorData" :editorToolbar="customToolbar"></vue-editor>
 </template>
 
 <script>
@@ -9,7 +9,7 @@
       name: "vtext",
       data(){
         return {
-          data:"",
+          editorData:"",
           customToolbar: [["bold", "italic", "underline"], [{ list: "ordered" }, { list: "bullet" }], ["code-block"]]
         }
       }

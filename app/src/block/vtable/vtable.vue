@@ -5,8 +5,8 @@
         <div ref="delete-row" class="delete-row delete-btn" @click="deleteRow">-</div>
         <div ref="delete-col" class="delete-col delete-btn" @click="deleteCol">-</div>
         <table cellpadding="0" cellspacing="" class="vtable-body">
-          <tr v-for="(row, ir) in data">
-            <td @blur="onEdit($event, ir, ic)" @mouseover="onHover($event, ir, ic)" contenteditable v-html="data[ir][ic]" v-for="(col, ic) in row">{{ir}} - {{ic}}</td>
+          <tr v-for="(row, ir) in editorData">
+            <td @blur="onEdit($event, ir, ic)" @mouseover="onHover($event, ir, ic)" contenteditable v-html="editorData[ir][ic]" v-for="(col, ic) in row">{{ir}} - {{ic}}</td>
           </tr>
         </table>
       </el-col>
@@ -27,7 +27,7 @@ export default {
   name: "vtable",
   data() {
     return {
-      data:[
+      editorData:[
         ['']
       ],
       lastCol:0,
@@ -37,7 +37,7 @@ export default {
   methods: {
     onEdit(evt, r, c){
       let src = evt.target.innerHTML
-      this.data[r][c] = src
+      this.editorData[r][c] = src
     },
     onHover(evt, r, c){
       let curTarget = evt.currentTarget;
@@ -51,16 +51,16 @@ export default {
       this.lastRow = r;
     },
     addRow(){
-      this.data.push(Array(this.data[0].length ? this.data[0].length : 1))
+      this.editorData.push(Array(this.editorData[0].length ? this.editorData[0].length : 1))
     },
     addColumn(){
-      this.data.forEach(r => r.push(''))
+      this.editorData.forEach(r => r.push(''))
     },
     deleteRow(){
-      this.data.splice(this.lastRow, 1);
+      this.editorData.splice(this.lastRow, 1);
     },
     deleteCol(){
-      this.data.forEach(r => r.splice(this.lastCol,1));
+      this.editorData.forEach(r => r.splice(this.lastCol,1));
     }
   }
 

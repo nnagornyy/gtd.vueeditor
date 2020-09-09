@@ -61,4 +61,5 @@ function getConfig(dir, fileName) {
     return config;
 }
 
+
 export default blocks;

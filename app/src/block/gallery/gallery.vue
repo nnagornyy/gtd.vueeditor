@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-select v-if="selectType" v-model="data.viewType" placeholder="Select">
+    <el-select v-if="selectType" v-model="editorData.viewType" placeholder="Select">
       <el-option
           v-for="item in options"
           :key="item.value"
@@ -9,8 +9,8 @@
       </el-option>
     </el-select>
     <el-row :gutter="20">
-      <draggable v-model="data.images" group="gallery" @start="drag=true" @end="drag=false">
-        <el-col :span="8" v-for="(item, i) in data.images">
+      <draggable v-model="editorData.images" group="gallery" @start="drag=true" @end="drag=false">
+        <el-col :span="8" v-for="(item, i) in editorData.images">
           <el-card class="image-block" shadow="hover">
             <div class="image-wrapper">
               <div class="image-hover"><i @click="deleteItem(i)" class="el-icon-delete"></i></div>
@@ -20,8 +20,8 @@
                 :src="item.src"
                 fit="cover">
             </el-image>
-            <el-input v-if="showImageHeader" placeholder="Название" v-model="data.images[i].title"></el-input>
-            <el-input v-if="showImageDescription" placeholder="Описание" v-model="data.images[i].description"></el-input>
+            <el-input v-if="showImageHeader" placeholder="Название" v-model="editorData.images[i].title"></el-input>
+            <el-input v-if="showImageDescription" placeholder="Описание" v-model="editorData.images[i].description"></el-input>
           </el-card>
         </el-col>
       </draggable>
@@ -61,7 +61,7 @@ export default {
   },
   data() {
     return {
-      data:{
+      editorData:{
         viewType:"",
         images:[]
       },
@@ -85,13 +85,13 @@ export default {
         title: "",
         description: ""
       };
-      this.data.images.push(item);
+      this.editorData.images.push(item);
     },
     deleteItem(i){
-      let fileId = this.data.images[i].imageId;
+      let fileId = this.editorData.images[i].imageId;
       axios.get('/local/modules/gtd.vueeditor/service/delete_file.php?id=' + fileId)
       .then(res => {
-        this.data.images.splice(i, 1);
+        this.editorData.images.splice(i, 1);
       })
     }
   }

@@ -2,22 +2,22 @@ export default {
     props: ['blockValue'],
     data(){
         return {
-            data:{
+            editorData:{
 
             }
         }
     },
     watch: {
-        data: {
+        editorData: {
             deep: true,
             handler(){
-                this.$emit('input', this.data)
+                this.$emit('input', this.editorData)
             }
         }
     },
     created() {
         if(this.blockValue && Object.keys(this.blockValue).length !== 0){
-            this.data = this.blockValue
+            this.editorData = this.blockValue
         }
     }
 }
