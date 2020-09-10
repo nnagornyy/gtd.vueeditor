@@ -21,9 +21,9 @@
           <div  v-for="block in availableBlock">
             <el-popover v-if="block.about" :open-delay="1000" placement="right" width="400" trigger="hover">
               <el-image
-                  style="width: 500px; height: 500px"
+                  style="width: 400px; height: 400px"
                   :src="block.about.img"
-                  :fit="fill"></el-image>
+                  fit="fill"></el-image>
               <div slot="reference" class="add-block-btn" @click="addBlock(block.value, block.label)">
                 <span class="add-block-text">{{block.label}}</span>
               </div>
