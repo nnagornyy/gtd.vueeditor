@@ -23,6 +23,7 @@ class gtd_vueeditor extends CModule {
     {
         $this->InstallEvents();
         RegisterModule($this->MODULE_ID);
+        $this->DoInstallDb();
         $this->createExtBlockDir();
     }
 
@@ -41,7 +42,19 @@ class gtd_vueeditor extends CModule {
 
     public function DoUninstall()
     {
+        $this->DoUninstallDb();
         UnRegisterModule($this->MODULE_ID);
+    }
+
+    private function DoInstallDb(){
+        Loader::includeModule($this->MODULE_ID);
+        Gtd\VueEditor\Preset\PresetTable::getEntity()->createDbTable();
+    }
+
+    private function DoUninstallDb(){
+        Loader::includeModule($this->MODULE_ID);
+        $conn = \Bitrix\Main\Application::getConnection();
+        $conn->dropTable(\Gtd\VueEditor\Preset\PresetTable::getTableName());
     }
 
     private function createExtBlockDir(){

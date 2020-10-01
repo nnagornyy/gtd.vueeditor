@@ -18,6 +18,9 @@ export default {
     created() {
         if(this.blockValue && Object.keys(this.blockValue).length !== 0){
             this.editorData = this.blockValue
+        }else if(Object.keys(this.editorData).length !== 0){
+            this.$emit('input', this.editorData)
         }
     }
+
 }

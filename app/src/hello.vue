@@ -3,14 +3,28 @@
       <el-row class="main-row">
         <el-col class="content-wrapper" :span="18">
           <input type="hidden" :value='formData' :name="inputName">
-          <draggable v-model="result" group="block" @start="drag=true" @end="drag=false">
+          <draggable handle=".handle" :key="uniqueKey" v-model="result" group="block" @start="drag=true" @end="drag=false">
             <el-card shadow="hover" class="block-wrapper" v-for="(block, i) in result">
               <el-row class="block-header">
                 <el-col :span="20">
                   <el-divider class="block-header-name" content-position="left">{{block.name}}</el-divider>
                 </el-col>
-                <el-col :span="4">
-                  <span class="delete-btn" @click="deleteBlock(i)"><i class="el-icon-delete"></i></span>
+                <el-col :span="4" class="block-actions">
+                  <div class="block-action">
+                    <span class="handle"> <i class="el-icon-rank"></i></span>
+                  </div>
+                  <div class="block-action">
+                    <el-dropdown @command="handleBlockCommand">
+                      <span class="el-dropdown-link"><i class="el-icon-setting el-icon--right"></i></span>
+                      <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item :command="{'action':'save', 'index':i}">Сохранить пресет</el-dropdown-item>
+                        <el-dropdown-item :command="{'action':'load', 'index':i}">Загрузить пресет</el-dropdown-item>
+                      </el-dropdown-menu>
+                    </el-dropdown>
+                  </div>
+                  <div class="block-action">
+                    <span class="delete-btn" @click="deleteBlock(i)"><i class="el-icon-delete"></i></span>
+                  </div>
                 </el-col>
               </el-row>
               <component :is="block.type" v-model="block.data" :blockValue="block.data"></component>
@@ -34,11 +48,19 @@
           </div>
         </el-col>
       </el-row>
+      <el-dialog v-loading="preset.loading" title="Выбор пресета" :visible.sync="preset.openDialog">
+        <el-table @row-click="presetSelect" :data="preset.presetList">
+          <el-table-column property="title" label="Заголовок"></el-table-column>
+          <el-table-column property="created" label="Создана"></el-table-column>
+          <el-table-column property="user" label="Создал"></el-table-column>
+        </el-table>
+      </el-dialog>
     </el-card>
 </template>
 
 <script>
-  import draggable from 'vuedraggable'
+  import draggable from 'vuedraggable';
+  import axios from 'axios';
   export default {
     name: "hello",
     components: BLOCK.reduce((obj, block) => {
@@ -46,6 +68,13 @@
     }, {draggable}),
     data(){
         return {
+            uniqueKey: 100,
+            preset:{
+              loading: false,
+              openDialog: false,
+              currentIndex:0,
+              presetList:[],
+            },
             selected: '',
             inputName: '',
             result:[],
@@ -53,20 +82,60 @@
         }
     },
     methods:{
-        config(block){
-
-        },
-        deleteBlock(i){
-          this.result.splice(i, 1);
-        },
-        addBlock(type, name = ""){
-            let blueprint = {
-                name: name,
-                type: type,
-                data: {}
-            }
-            this.result.push(blueprint);
+      config(block){},
+      handleBlockCommand(a){
+        if(a.action == 'save'){
+          this.savePreset(a.index);
         }
+        if(a.action == 'load'){
+          this.loadPresetList(a.index);
+        }
+      },
+      loadPresetList(i){
+        this.preset.currentIndex = i;
+        let block = this.result[i].type
+        this.preset.loading = true;
+        axios.get('/local/modules/gtd.vueeditor/service/preset.php?action=list&block='+block)
+        .then(res => {
+          this.preset.presetList = res.data.result;
+          this.preset.openDialog = true;
+          this.preset.loading = false;
+        })
+      },
+      presetSelect(r,c,e){
+        this.result[this.preset.currentIndex].data = r.data;
+        this.uniqueKey = new Date().getMilliseconds();
+        this.preset.openDialog = false;
+      },
+      savePreset(i){
+        this.$prompt('Введите название', 'Запись', {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          inputErrorMessage: 'не верное название'
+        }).then(({ value }) => {
+          axios.post('/local/modules/gtd.vueeditor/service/preset.php?action=save', {
+            'title': value,
+            'block': this.result[i].type,
+            'data': this.result[i].data
+          }).then(res => {
+            this.$message({
+              type: 'success',
+              message: 'Пресет записан:' + value
+            });
+          })
+        });
+      },
+      deleteBlock(i){
+        this.result.splice(i, 1);
+      },
+      addBlock(type, name = ""){
+        let blueprint = {
+          name: name,
+          type: type,
+          data: {}
+        }
+        this.result.push(blueprint);
+      }
     },
     mounted() {
         this.result = this.$root.$data.val || [];
@@ -79,7 +148,6 @@
         },
         availableBlock(){
             let blocks = [];
-            debugger;
             BLOCK.forEach(b => {
                 if(this.allowBlock.length === 0 || this.allowBlock.includes(b.componentName))
                 blocks.push({
@@ -94,8 +162,18 @@
   }
 </script>
 <style>
+  .block-actions{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -6px;
+  }
+  .block-action{
+    cursor: pointer;
+    margin-left: 12px;
+    align-self: center;
+  }
   .block-header{
-    opacity: 0;
+    opacity: 1;
     transition: opacity 600ms;
   }
   .block-header-name{
@@ -105,12 +183,10 @@
     opacity: 1;
   }
   .delete-btn{
-    position: absolute;
     display: block;
     right: 8px;
     font-size: 16px;
     top: -5px;
-    cursor: pointer;
   }
   .delete-btn:hover{
     color: red;
