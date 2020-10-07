@@ -35,7 +35,7 @@ class ApiService{
             $preset
                 ->setTitle($this->payload['title'])
                 ->setCreated(DateTime::createFromTimestamp(time()))
-                ->setData($this->payload['data'])
+                ->setData(json_encode($this->payload['data']))
                 ->setShare(true)
                 ->setUserId($USER->GetID())
                 ->setBlock($this->payload['block'])
@@ -63,7 +63,7 @@ class ApiService{
             $result[] = [
                 'id' => $preset->getId(),
                 'title' => $preset->getTitle(),
-                'data' => $preset->getData(),
+                'data' => json_decode($preset->getData()),
                 'block' => $preset->getBlock(),
                 'created' => $preset->getCreated()->format('d.m.Y H:i'),
                 'user' => $user->getLastName().' '.$user->getName()

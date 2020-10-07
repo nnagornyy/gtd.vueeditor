@@ -54,7 +54,9 @@ class gtd_vueeditor extends CModule {
     private function DoUninstallDb(){
         Loader::includeModule($this->MODULE_ID);
         $conn = \Bitrix\Main\Application::getConnection();
-        $conn->dropTable(\Gtd\VueEditor\Preset\PresetTable::getTableName());
+        if($conn->isTableExists(\Gtd\VueEditor\Preset\PresetTable::getTableName())){
+            $conn->dropTable(\Gtd\VueEditor\Preset\PresetTable::getTableName());
+        }
     }
 
     private function createExtBlockDir(){

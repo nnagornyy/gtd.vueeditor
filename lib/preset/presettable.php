@@ -25,7 +25,7 @@ class PresetTable extends DataManager{
                 ->configurePrimary(),
             new StringField('TITLE'),
             new StringField('BLOCK'),
-            new ArrayField('DATA'),
+            new TextField('DATA'),
             new DatetimeField('CREATED'),
             new IntegerField('USER_ID'),
             new BooleanField('SHARE', ['values' => ['N', 'Y']]),
