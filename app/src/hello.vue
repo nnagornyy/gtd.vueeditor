@@ -104,8 +104,11 @@
       },
       presetSelect(r,c,e){
         this.result[this.preset.currentIndex].data = r.data;
-        this.uniqueKey = new Date().getMilliseconds();
+        this.forceRender();
         this.preset.openDialog = false;
+      },
+      forceRender(){
+        this.uniqueKey = new Date().getMilliseconds();
       },
       savePreset(i){
         this.$prompt('Введите название', 'Запись', {
@@ -127,6 +130,7 @@
       },
       deleteBlock(i){
         this.result.splice(i, 1);
+        this.forceRender();
       },
       addBlock(type, name = ""){
         let blueprint = {
