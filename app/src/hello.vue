@@ -3,7 +3,17 @@
       <el-row class="main-row">
         <el-col class="content-wrapper" :span="18">
           <input type="hidden" :value='formData' :name="inputName">
-          <draggable :class="draggableClass" handle=".handle" :key="uniqueKey" v-model="result" group="block" @start="startDrag" @end="drag=false">
+          <draggable
+              :class="draggableClass"
+              handle=".handle"
+              :key="uniqueKey"
+              v-model="result"
+              group="block"
+              @start="startDrag"
+              @end="endDrag"
+              :scrollSensitivity="200"
+              :forceFallback="true"
+          >
             <el-card shadow="hover" class="block-wrapper" v-for="(block, i) in result">
               <el-row class="block-header">
                 <el-col :span="20">
@@ -164,11 +174,10 @@
       },
       startDrag(){
         this.drag = true;
-        window.scrollTo(0, this.$el.offsetHeight - 100);
-        console.log('startDrag');
       },
       endDrag(){
-        console.log('endDrag');
+        this.drag = false;
+        this.forceRender();
       }
     },
     mounted() {
@@ -308,11 +317,11 @@
   .el-upload .adm-input-file{
     display: none!important;
   }
-  .drag-start .block-wrapper{
-    height: 40px;
-  }
-  .drag-start .block-wrapper.sortable-chosen{
-    height: 40px;
-    background: #f8f8f8;
-  }
+  /*.drag-start .block-wrapper{*/
+  /*  height: 40px;*/
+  /*}*/
+  /*.drag-start .block-wrapper.sortable-chosen{*/
+  /*  height: 40px;*/
+  /*  background: #f8f8f8;*/
+  /*}*/
 </style>
