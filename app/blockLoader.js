@@ -7,7 +7,7 @@ console.log(path.join(__dirname));
 var blocks = [];
 
 //copy ext block
-ncp(path.join(__dirname,'../../../vueeditor/'), path.join(__dirname,'src/ext_block'));
+//ncp(path.join(__dirname,'../../../vueeditor/'), path.join(__dirname,'src/ext_block'));
 
 recFindByExt(path.join(__dirname), null, blocks);
 console.log(blocks);

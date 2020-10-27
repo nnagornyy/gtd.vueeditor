@@ -4,7 +4,8 @@
   "description": "Basic application demonstrating Webpack setup with vue",
   "scripts": {
     "build-dev": "WEBPACK_ENV=dev webpack --progress --colors --watch",
-    "build-prod": "WEBPACK_ENV=production webpack"
+    "build-prod": "WEBPACK_ENV=production webpack",
+    "prebuild-prod": "cp -R ../../../vueeditor/* ./src/ext_block"
   },
   "author": "Trekels Vincent",
   "license": "none",
