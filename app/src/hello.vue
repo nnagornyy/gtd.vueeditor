@@ -1,15 +1,21 @@
 <template>
-    <el-card style="margin: auto">
+    <el-card id="el-container" style="margin: auto">
       <el-row class="main-row">
         <el-col class="content-wrapper" :span="18">
           <input type="hidden" :value='formData' :name="inputName">
-          <draggable handle=".handle" :key="uniqueKey" v-model="result" group="block" @start="drag=true" @end="drag=false">
+          <draggable :class="draggableClass" handle=".handle" :key="uniqueKey" v-model="result" group="block" @start="startDrag" @end="drag=false">
             <el-card shadow="hover" class="block-wrapper" v-for="(block, i) in result">
               <el-row class="block-header">
                 <el-col :span="20">
                   <el-divider class="block-header-name" content-position="left">{{block.name}}</el-divider>
                 </el-col>
                 <el-col :span="4" class="block-actions">
+                  <div class="block-action" v-if="result[i-1]">
+                    <span @click="moveUp(i)"><i class="el-icon-sort-up"></i></span>
+                  </div>
+                  <div class="block-action">
+                    <span @click="moveDown(i)" v-if="result[i+1]"><i class="el-icon-sort-down"></i></span>
+                  </div>
                   <div class="block-action">
                     <span class="handle"> <i class="el-icon-rank"></i></span>
                   </div>
@@ -68,6 +74,8 @@
     }, {draggable}),
     data(){
         return {
+            containerTop: 0,
+            drag: false,
             uniqueKey: 100,
             preset:{
               loading: false,
@@ -139,29 +147,58 @@
           data: {}
         }
         this.result.push(blueprint);
+      },
+      moveUp(i){
+        const current = this.result[i];
+        const next = this.result[i-1];
+        this.result[i-1] = current;
+        this.result[i] = next;
+        this.forceRender();
+      },
+      moveDown(i){
+        const current = this.result[i];
+        const next = this.result[i+1];
+        this.result[i+1] = current;
+        this.result[i] = next;
+        this.forceRender();
+      },
+      startDrag(){
+        this.drag = true;
+        window.scrollTo(0, this.$el.offsetHeight - 100);
+        console.log('startDrag');
+      },
+      endDrag(){
+        console.log('endDrag');
       }
     },
     mounted() {
         this.result = this.$root.$data.val || [];
         this.allowBlock = this.$root.$data.allowBlocks;
         this.inputName = this.$root.$data.inputName;
+        this.containerTop = this.$el.getBoundingClientRect().top;
+        debugger;
     },
     computed:{
-        formData(){
-          return JSON.stringify(this.result);
-        },
-        availableBlock(){
-            let blocks = [];
-            BLOCK.forEach(b => {
-                if(this.allowBlock.length === 0 || this.allowBlock.includes(b.componentName))
-                blocks.push({
-                    label: b.config.name,
-                    value: b.componentName,
-                    about: b.config.conf.about,
-                })
-            })
-            return blocks;
+      formData(){
+        return JSON.stringify(this.result);
+      },
+      availableBlock(){
+        let blocks = [];
+        BLOCK.forEach(b => {
+          if(this.allowBlock.length === 0 || this.allowBlock.includes(b.componentName))
+          blocks.push({
+            label: b.config.name,
+            value: b.componentName,
+            about: b.config.conf.about,
+          })
+        })
+        return blocks;
+      },
+      draggableClass(){
+        return{
+          'drag-start' : this.drag
         }
+      }
     }
   }
 </script>
@@ -270,5 +307,12 @@
   }
   .el-upload .adm-input-file{
     display: none!important;
+  }
+  .drag-start .block-wrapper{
+    height: 40px;
+  }
+  .drag-start .block-wrapper.sortable-chosen{
+    height: 40px;
+    background: #f8f8f8;
   }
 </style>
