@@ -1,6 +1,7 @@
 {
   "name": " YouTube видео",
-  "type" : "vyoutube",
+  "type" : "youtubeVideo",
+  "handler": "",
   "conf" : {
     "foo": "bar",
     "other": "some",

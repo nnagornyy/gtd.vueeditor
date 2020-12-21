@@ -1,6 +1,7 @@
 {
   "name": "Заголовок",
   "type": "vheader",
+  "handler": "",
   "conf" : {
     "foo": "bar",
     "other": "some",
