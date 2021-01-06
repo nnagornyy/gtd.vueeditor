@@ -10,7 +10,7 @@
   "author": "Trekels Vincent",
   "license": "none",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-preset-latest": "^6.24.1",
     "bootstrap": "^4.1.3",
