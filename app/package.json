@@ -5,7 +5,7 @@
   "scripts": {
     "build-dev": "WEBPACK_ENV=dev webpack --progress --colors --watch",
     "build-prod": "WEBPACK_ENV=production webpack",
-    "prebuild-prod": "mkdir -p ./src/ext_block; cp -R ../../../vueeditor/* ./src/ext_block"
+    "prebuild-prod": "mkdir -p ./src/ext_block; cp -R ../../../vueeditor/* ./src/ext_block || true"
   },
   "author": "Trekels Vincent",
   "license": "none",
