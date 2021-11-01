@@ -31,8 +31,8 @@ class Editor {
     {
         $this->app_id = $this->generateAppId();
         if($baseDir === ""){
-            $this->moduleDir = dirname(__DIR__);
-            $this->moduleDir = str_replace($_SERVER['DOCUMENT_ROOT'],'', $this->moduleDir);
+            //TODO : находить путь от document_root динамично
+            $this->moduleDir = $_SERVER['DOCUMENT_ROOT'].'/local/modules/gtd.vueeditor';
         }
         $this->assetDir = $this->moduleDir.self::ASSET_SUB_DIR;
     }
