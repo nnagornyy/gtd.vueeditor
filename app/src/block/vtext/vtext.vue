@@ -10,7 +10,7 @@
       data(){
         return {
           editorData:"",
-          customToolbar: [["bold", "italic", "underline"], [{ list: "ordered" }, { list: "bullet" }], ["code-block"]]
+          customToolbar: [["bold", "italic", "underline", "link"]]
         }
       }
     }
