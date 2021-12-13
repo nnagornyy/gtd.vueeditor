@@ -1,9 +1,8 @@
 <script>
-    document.gtdEditor(
+    new document.gtdEditor(
         <?=$this->getValue()?>,
         '<?=$this->getInputName()?>',
-        '<?=$this->getAppId()?>',
         '<?=$this->getAllowBlocks()?>',
-        '<?=$this->getPropertyId()?>'
-    );
+        '<?=$this->getAppId()?>'
+    ).initEditor();
 </script>

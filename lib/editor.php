@@ -56,7 +56,7 @@ class Editor {
         }
     }
 
-    private function loadJsFiles(){
+    public function loadJsFiles(){
         $asset = Asset::getInstance();
         $asset->addString('<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">');
         foreach ($this->getJsFile() as $jsFileName){

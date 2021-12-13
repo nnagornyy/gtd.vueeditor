@@ -185,10 +185,12 @@
         this.allowBlock = this.$root.$data.allowBlocks;
         this.inputName = this.$root.$data.inputName;
         this.containerTop = this.$el.getBoundingClientRect().top;
-        debugger;
     },
     computed:{
       formData(){
+        if(typeof this.$root.callback ===  "function"){
+          this.$root.callback(this.result);
+        }
         return JSON.stringify(this.result);
       },
       availableBlock(){

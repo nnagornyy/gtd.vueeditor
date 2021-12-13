@@ -31,8 +31,13 @@ const config = {
                 test: /\.js$/,
                 loader: path.resolve(__dirname, 'node_modules', 'babel-loader'),
                 options: {
-                    babelrc: false,
+                    babelrc: true,
                 }
+            },
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
             },
             {
                 test: /\.vue$/,
@@ -65,9 +70,6 @@ const config = {
                 test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
                 //loader: path.resolve(__dirname, 'node_modules', 'file-loader'),
                 loader: 'file-loader',
-                query: {
-                    name: '[hash:8].[ext]',
-                },
             },
         ]
     },
