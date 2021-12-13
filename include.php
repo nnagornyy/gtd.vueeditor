@@ -1,2 +1,5 @@
 <?php
-//psr!
+// include js
+
+$editor = new Gtd\VueEditor\Editor();
+$editor->loadJsFiles();
