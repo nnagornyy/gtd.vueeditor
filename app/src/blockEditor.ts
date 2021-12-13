@@ -24,7 +24,7 @@ export default class BlockEditor{
     private _onValueChange:valueChangeCallback;
     private _onRendered:any;
 
-    constructor(value: string, inputName: string = "", allowBlock: string = "", appId: string = "") {
+    constructor(value: Array<any>, inputName: string = "", allowBlock: Array<any>, appId: string = "") {
         this.setValue(value);
         this.setAllowBlocks(allowBlock);
         this._appId = appId.length > 0 ? appId : this.makeId(10);
@@ -32,7 +32,7 @@ export default class BlockEditor{
     }
 
     initEditor(){
-        document.addEventListener('DOMContentLoaded', () => { // Аналог $(document).ready(function(){
+        document.addEventListener('DOMContentLoaded', () => {
             new Vue({
                 data:() => {
                     return {
@@ -53,28 +53,48 @@ export default class BlockEditor{
     }
 
 
-    setValue(value:string) {
+    setValue(value:Array<any>): BlockEditor
+    {
+        this._value = value;
+        return this;
+    }
+
+    setJsonValue(value:string): BlockEditor
+    {
         this._value = JSON.parse(value) || [];
+        return this;
     }
 
-    setAllowBlocks(value:string){
-        this._allowBlock = value.length > 0 ? JSON.parse(value) : []
+    setAllowBlocks(value:Array<string>): BlockEditor
+    {
+        this._allowBlock = value;
+        return this;
     }
 
-    setInputName(inputName:string) {
+    setJsonAllowBlocks(value:string): BlockEditor{
+        this._allowBlock = value.length > 0 ? JSON.parse(value) : [];
+        return this;
+    }
+
+    setInputName(inputName:string): BlockEditor
+    {
         this._inputName = inputName;
+        return this;
     }
 
-    onValueChange(callBack:valueChangeCallback) {
+    onValueChange(callBack:valueChangeCallback): BlockEditor
+    {
         if(typeof callBack === "function"){
             this._onValueChange = callBack;
         }
+        return this;
     }
 
-    onRendered(callBack:any) {
+    onRendered(callBack:any): BlockEditor {
         if(typeof callBack === 'function'){
             this._onRendered = callBack;
         }
+        return this;
     }
 
     makeId(length:number = 10) :string

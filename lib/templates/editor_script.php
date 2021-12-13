@@ -1,8 +1,7 @@
 <script>
-    new document.gtdEditor(
-        <?=$this->getValue()?>,
-        '<?=$this->getInputName()?>',
-        '<?=$this->getAllowBlocks()?>',
-        '<?=$this->getAppId()?>'
-    ).initEditor();
+    new document.gtdEditor([], '<?=$this->getInputName()?>', [], '<?=$this->getAppId()?>'
+    )
+        .setJsonValue(<?=$this->getValue()?>)
+        .setJsonAllowBlocks(<?=$this->getAllowBlocks()?>)
+        .initEditor();
 </script>
