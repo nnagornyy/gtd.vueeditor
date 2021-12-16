@@ -32,26 +32,23 @@ export default class BlockEditor{
     }
 
     initEditor(){
-        document.addEventListener('DOMContentLoaded', () => {
-            new Vue({
-                data:() => {
-                    return {
-                        val: this._value,
-                        inputName: this._inputName,
-                        allowBlocks: this._allowBlock,
-                        callback: this._onValueChange
-                    }
-                },
-                render: (h) => h(hello),
-                mounted: () => {
-                    if(typeof this._onRendered === 'function'){
-                        this._onRendered();
-                    }
+        new Vue({
+            data:() => {
+                return {
+                    val: this._value,
+                    inputName: this._inputName,
+                    allowBlocks: this._allowBlock,
+                    callback: this._onValueChange
                 }
-            }).$mount('#' + this._appId)
-        });
+            },
+            render: (h) => h(hello),
+            mounted: () => {
+                if(typeof this._onRendered === 'function'){
+                    this._onRendered();
+                }
+            }
+        }).$mount('#' + this._appId)
     }
-
 
     setValue(value:Array<any>): BlockEditor
     {
