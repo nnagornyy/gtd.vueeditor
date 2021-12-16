@@ -22,8 +22,8 @@ const config = {
         main: './src/app.js'
     },
     output: {
-        path: path.join(__dirname),
-        filename: "./asset/script.js",
+        path: path.join(__dirname, '../../../vueeditor_assets/'),
+        filename: "./script.js",
     },
     module: {
         rules: [

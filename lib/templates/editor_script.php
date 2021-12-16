@@ -1,5 +1,5 @@
 <script>
-    new document.gtdEditor([], '<?=$this->getInputName()?>', [], '<?=$this->getAppId()?>'
+    new document.vueeditor([], '<?=$this->getInputName()?>', [], '<?=$this->getAppId()?>'
     )
         .setJsonValue(<?=$this->getValue()?>)
         .setJsonAllowBlocks(<?=$this->getAllowBlocks()?>)

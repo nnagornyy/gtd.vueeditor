@@ -6,7 +6,7 @@ use Bitrix\Main\Page\Asset;
 
 class Editor {
 
-    const ASSET_SUB_DIR = '/app/asset/';
+    const ASSET_SUB_DIR = '/local/vueeditor_assets';
 
     private $moduleDir;
 
@@ -33,7 +33,7 @@ class Editor {
         $real_base_dir = dirname(__FILE__, 5);
         if($baseDir === ""){
             //TODO : находить путь от document_root динамично
-            $this->moduleDir = str_replace($real_base_dir, "",  realpath(__DIR__ . '/..'));
+            $this->moduleDir = str_replace($real_base_dir, "",  realpath(__DIR__ . '/../../../..'));
 
         }
         $this->assetDir = $this->moduleDir.self::ASSET_SUB_DIR;
