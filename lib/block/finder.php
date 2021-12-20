@@ -13,15 +13,27 @@ class Finder {
     const EXTERNAL_PATH = 'external';
 
 
+    private $externalPathRewrite = "";
+
+    public function __construct($externalPathRewrite = "")
+    {
+        $this->externalPathRewrite = $externalPathRewrite;
+    }
+
+
     /**
      * @return string[]
      */
     private function getBlockPaths(): array
     {
-        return [
-            'default' => $_SERVER['DOCUMENT_ROOT'].'/local/modules/gtd.vueeditor/app/src/block',
-            'external' => $_SERVER['DOCUMENT_ROOT'].'/local/modules/gtd.vueeditor/app/src/ext_block',
+        $paths = [
+            self::DEFAULT_PATH => $_SERVER['DOCUMENT_ROOT'].'/local/modules/gtd.vueeditor/app/src/block',
+            self::EXTERNAL_PATH => $_SERVER['DOCUMENT_ROOT'].'/local/modules/gtd.vueeditor/app/src/ext_block',
         ];
+        if($this->externalPathRewrite != ""){
+            $paths[self::EXTERNAL_PATH] = $this->externalPathRewrite;
+        }
+        return $paths;
     }
 
     public static function getExtBlockPath():string

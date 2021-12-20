@@ -14,13 +14,13 @@ class BlockParser {
      */
     private $blocks = [];
 
-    public function __construct($arDbBlock){
+    public function __construct($arDbBlock, $externalPathRewrite = ""){
         $this->loadBlockConfigs();
         $this->setBlocks($arDbBlock);
     }
 
-    private function loadBlockConfigs(){
-        $finder = new Finder();
+    private function loadBlockConfigs($externalPathRewrite = ""){
+        $finder = new Finder($externalPathRewrite);
         $configs = $finder->find('all');
         foreach ($configs as $config){
             $this->configs[$config->getType()] = $config;
