@@ -15,7 +15,7 @@ class BlockParser {
     private $blocks = [];
 
     public function __construct($arDbBlock, $externalPathRewrite = ""){
-        $this->loadBlockConfigs();
+        $this->loadBlockConfigs($externalPathRewrite);
         $this->setBlocks($arDbBlock);
     }
 
