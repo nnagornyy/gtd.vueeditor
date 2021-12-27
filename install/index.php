@@ -38,6 +38,14 @@ class gtd_vueeditor extends CModule {
             IBlockField::class,
             "GetUserTypeDescription"
         );
+
+        $em->registerEventHandlerCompatible(
+            "main",
+            "OnUserTypeBuildList",
+            $this->MODULE_ID,
+            IBlockField::class,
+            "GetUserTypeDescription"
+        );
     }
 
     public function DoUninstall()

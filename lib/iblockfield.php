@@ -2,6 +2,7 @@
 namespace Gtd\VueEditor;
 
 use Bitrix\Iblock\PropertyTable;
+use function Symfony\Component\Translation\t;
 
 
 //@todo отрефачить класс , добавить шаблоны и тд
@@ -16,8 +17,11 @@ class IBlockField {
 
     public function GetUserTypeDescription(){
         return [
+            "CLASS_NAME" => __CLASS__,
+            "BASE_TYPE" => \CUserTypeManager::BASE_TYPE_STRING,
             "PROPERTY_TYPE" => PropertyTable::TYPE_STRING,
             "USER_TYPE" => self::USER_TYPE,
+            "USER_TYPE_ID" => self::USER_TYPE,
             "DESCRIPTION" => "Блочный редактор",
             "GetPublicViewHTML" => array(__CLASS__, "GetPublicViewHTML"),
             "GetPublicEditHTML" => array(__CLASS__, "GetPublicEditHTML"),
@@ -29,7 +33,17 @@ class IBlockField {
             "PrepareSettings" =>array(__CLASS__, "PrepareSettings"),
             "GetUIFilterProperty" => array(__CLASS__, "GetUIFilterProperty"),
             "GetSettingsHTML" => array(__CLASS__, "GetSettingsHTML"),
+            "GetDBColumnType" =>  array(__CLASS__, "GetDBColumnType"),
         ];
+    }
+
+    /**
+     * @param $userField
+     * @return string
+     */
+    public static function getDBColumnType($userField): string
+    {
+        return 'text';
     }
 
     public static function GetPublicViewHTML($arProperty, $value, $strHTMLControlName)
@@ -71,6 +85,7 @@ class IBlockField {
     }
 
     public static function GetSettingsHTML($arProperty, $strHTMLControlName, &$arPropertyFields) {
+        $propType = array_key_exists('USER_TYPE_SETTINGS', $arProperty) ? 'USER_TYPE_SETTINGS' : 'SETTINGS';
         $arPropertyFields = array(
             "HIDE" => array("FILTRABLE", "ROW_COUNT", "COL_COUNT", "DEFAULT_VALUE"), //will hide the field
             "SET" => array("FILTRABLE" => "N"), //if set then hidden field will get this value
@@ -80,7 +95,7 @@ class IBlockField {
         $blockConfig = $configFinder->find();
         $option = "";
         foreach ($blockConfig as $config){
-            $selected = in_array($config->getType(), $arProperty['USER_TYPE_SETTINGS']['ALLOW_BLOCK']) ? "selected" : "";
+            $selected = in_array($config->getType(), $arProperty[$propType]['ALLOW_BLOCK']) ? "selected" : "";
             $option .= "<option ".$selected." value='".$config->getType()."'>".$config->getTitle()."</option>";
         }
         return '
@@ -90,6 +105,22 @@ class IBlockField {
                 <select size="10" multiple="multiple" name="'.$strHTMLControlName["NAME"].'[ALLOW_BLOCK][]">'.$option.'</select>
             </td>
         </tr>';
+    }
+
+    public static function GetEditFormHTML($arUserField, $arHtmlControl)
+    {
+      global $APPLICATION;
+      $editor = new Editor();
+      $editor->setPropertyId($arUserField['ID']);
+      if($arHtmlControl['VALUE']){
+        $editor->setValue(htmlspecialchars_decode($arHtmlControl['VALUE']));
+      }
+      if(!empty($arUserField['SETTINGS']['ALLOW_BLOCK'])){
+        $editor->setAllowBlocks($arUserField['SETTINGS']['ALLOW_BLOCK']);
+      }
+      $editor
+        ->setInputName($arHtmlControl["NAME"])
+        ->initEditor();
     }
 
     public static function GetPropertyFieldHtml($arProperty, $value, $strHTMLControlName)
@@ -108,17 +139,35 @@ class IBlockField {
             ->initEditor();
     }
 
+    // для ИБ
     public static function ConvertToDB($arProperty, $value)
     {
+        $value['VALUE'] = \Bitrix\Main\Text\Emoji::encode($value['VALUE']);
         $return['VALUE'] = $value['VALUE'];
         $return['DESCRIPTION'] = "";
         return $return;
     }
 
+    // для uf-поля
+    public static function OnBeforeSave($arProperty, $value, $user_id)
+    {
+        $value = self::ConvertToDB($arProperty, ['VALUE' => $value]);
+        return $value['VALUE'];
+    }
 
+
+    // для ИБ
     public static function ConvertFromDB($arProperty, $value)
     {
+        $value['VALUE'] = \Bitrix\Main\Text\Emoji::decode($value['VALUE']);
         return $value;
+    }
+
+    // для uf-поля
+    public static function OnAfterFetch($arProperty, $value)
+    {
+        $value = self::ConvertFromDB($arProperty, $value);
+        return $value['VALUE'];
     }
 
     /**
@@ -176,7 +225,9 @@ class IBlockField {
 //        }
 //
 //        return array('USER_TYPE_SETTINGS' => $newsettings);
-        return  $arProperty['USER_TYPE_SETTINGS'];
+
+        $propType = array_key_exists('USER_TYPE_SETTINGS', $arProperty) ? 'USER_TYPE_SETTINGS' : 'SETTINGS';
+        return  $arProperty[$propType];
     }
 
 
