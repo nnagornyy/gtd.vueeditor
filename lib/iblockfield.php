@@ -107,22 +107,25 @@ class IBlockField {
         </tr>';
     }
 
+    // для uf
     public static function GetEditFormHTML($arUserField, $arHtmlControl)
     {
-      global $APPLICATION;
-      $editor = new Editor();
-      $editor->setPropertyId($arUserField['ID']);
-      if($arHtmlControl['VALUE']){
-        $editor->setValue(htmlspecialchars_decode($arHtmlControl['VALUE']));
-      }
-      if(!empty($arUserField['SETTINGS']['ALLOW_BLOCK'])){
-        $editor->setAllowBlocks($arUserField['SETTINGS']['ALLOW_BLOCK']);
-      }
-      $editor
-        ->setInputName($arHtmlControl["NAME"])
-        ->initEditor();
+        ob_start();
+        $editor = new Editor();
+        $editor->setPropertyId($arUserField['ID']);
+        if ($arHtmlControl['VALUE']) {
+            $editor->setValue(htmlspecialchars_decode($arHtmlControl['VALUE']));
+        }
+        if (!empty($arUserField['SETTINGS']['ALLOW_BLOCK'])) {
+            $editor->setAllowBlocks($arUserField['SETTINGS']['ALLOW_BLOCK']);
+        }
+        $editor
+            ->setInputName($arHtmlControl["NAME"])
+            ->initEditor();
+        return ob_get_clean();
     }
 
+    // для ИБ
     public static function GetPropertyFieldHtml($arProperty, $value, $strHTMLControlName)
     {
         global $APPLICATION;
