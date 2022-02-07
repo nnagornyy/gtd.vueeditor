@@ -198,6 +198,7 @@ export default {
   },
   computed:{
     formData(){
+      this.uniqueKey;
       return JSON.stringify(this.result);
     },
     availableBlock(){
