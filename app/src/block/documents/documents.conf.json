@@ -1,5 +1,6 @@
 {
   "name": "Документы",
   "type" : "documents",
+  "handler": "\\Gtd\\VueEditor\\Block\\DocumentsHandler",
   "conf" : {}
 }
