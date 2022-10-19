@@ -126,6 +126,7 @@ export default {
       this.preset.openDialog = false;
     },
     forceRender(){
+    forceRender(){ // todo. убрать потом везде
       this.uniqueKey = new Date().getMilliseconds();
     },
     savePreset(i){
@@ -164,6 +165,8 @@ export default {
       this.result[i-1] = current;
       this.result[i] = next;
       this.forceRender();
+      this.result.splice(i-1, 1, current);
+      this.result.splice(i, 1, next);
     },
     moveDown(i){
       const current = this.result[i];
@@ -171,6 +174,8 @@ export default {
       this.result[i+1] = current;
       this.result[i] = next;
       this.forceRender();
+      this.result.splice(i+1, 1, current);
+      this.result.splice(i, 1, next);
     },
     startDrag(){
       this.drag = true;
@@ -198,7 +203,6 @@ export default {
   },
   computed:{
     formData(){
-      this.uniqueKey;
       return JSON.stringify(this.result);
     },
     availableBlock(){
