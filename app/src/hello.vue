@@ -126,7 +126,6 @@ export default {
       this.preset.openDialog = false;
     },
     forceRender(){
-    forceRender(){ // todo. убрать потом везде
       this.uniqueKey = new Date().getMilliseconds();
     },
     savePreset(i){
