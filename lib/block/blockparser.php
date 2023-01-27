@@ -1,8 +1,10 @@
 <?php
+
 namespace Gtd\VueEditor\Block;
 
 
-class BlockParser {
+class BlockParser
+{
 
     /**
      * @var BlockConfig []
@@ -14,28 +16,32 @@ class BlockParser {
      */
     private $blocks = [];
 
-    public function __construct($arDbBlock, $externalPathRewrite = ""){
+    public function __construct($arDbBlock, $externalPathRewrite = "")
+    {
         $this->loadBlockConfigs($externalPathRewrite);
         $this->setBlocks($arDbBlock);
     }
 
-    private function loadBlockConfigs($externalPathRewrite = ""){
+    private function loadBlockConfigs($externalPathRewrite = "")
+    {
         $finder = new Finder($externalPathRewrite);
         $configs = $finder->find('all');
-        foreach ($configs as $config){
+        foreach ($configs as $config) {
             $this->configs[$config->getType()] = $config;
         }
     }
 
-    private function setBlocks($array){
-        foreach ($array as $dbBlock){
+    private function setBlocks($array)
+    {
+        foreach ($array as $dbBlock) {
             $this->blocks[] = new Block($dbBlock);
         }
     }
 
-    public function processingBlock(){
+    public function processingBlock()
+    {
         $result = [];
-        foreach ($this->blocks as $block){
+        foreach ($this->blocks as $block) {
             $resultBlock = [];
             $handler = $this->getBlockHandler($block->getType());
             $handler->setBlock($block);
@@ -49,21 +55,24 @@ class BlockParser {
     private function getBlockHandler($type): Handler
     {
         $config = $this->getConfigByType($type);
-        $handlerClass = $config->getHandler();
-        if(!empty($handlerClass)){
-            if(!class_exists($handlerClass)){
-                throw new \Exception('Клас не найден');
+        if ($config instanceof BlockConfig) {
+            $handlerClass = $config->getHandler();
+            if (!empty($handlerClass)) {
+                if (!class_exists($handlerClass)) {
+                    throw new \Exception('Клас не найден');
+                }
+                $class = new $handlerClass;
+                if (!$class instanceof Handler) {
+                    throw new \Exception('обработчик для блока должен быть с интерфейсом Handler');
+                }
+                return $class;
             }
-            $class = new $handlerClass;
-            if(!$class instanceof Handler){
-                throw new \Exception('обработчик для блока должен быть с интерфейсом Handler');
-            }
-            return $class;
         }
         return new DefaultHandler();
     }
 
-    private function getConfigByType($type){
+    private function getConfigByType($type)
+    {
         return $this->configs[$type];
     }
 }
