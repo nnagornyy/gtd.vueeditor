@@ -15,7 +15,7 @@ class IBlockField {
 
     const USER_TYPE = 'BlockEditor';
 
-    public function GetUserTypeDescription(){
+    public static function GetUserTypeDescription(){
         return [
             "CLASS_NAME" => __CLASS__,
             "BASE_TYPE" => \CUserTypeManager::BASE_TYPE_STRING,
@@ -95,7 +95,7 @@ class IBlockField {
         $blockConfig = $configFinder->find();
         $option = "";
         foreach ($blockConfig as $config){
-            $selected = in_array($config->getType(), $arProperty[$propType]['ALLOW_BLOCK']) ? "selected" : "";
+            $selected = in_array($config->getType(), $arProperty[$propType]['ALLOW_BLOCK'] ?? []) ? "selected" : "";
             $option .= "<option ".$selected." value='".$config->getType()."'>".$config->getTitle()."</option>";
         }
         return '
