@@ -1,4 +1,5 @@
 <?php
+
 namespace Gtd\VueEditor;
 
 use Bitrix\Iblock\PropertyTable;
@@ -11,11 +12,13 @@ use function Symfony\Component\Translation\t;
  * Class IBlockField
  * @package Gtd\VueEditor
  */
-class IBlockField {
+class IBlockField
+{
 
     const USER_TYPE = 'BlockEditor';
 
-    public static function GetUserTypeDescription(){
+    public static function GetUserTypeDescription()
+    {
         return [
             "CLASS_NAME" => __CLASS__,
             "BASE_TYPE" => \CUserTypeManager::BASE_TYPE_STRING,
@@ -29,8 +32,8 @@ class IBlockField {
             "GetPropertyFieldHtml" => array(__CLASS__, "GetPropertyFieldHtml"),
             "ConvertToDB" => array(__CLASS__, "ConvertToDB"),
             "ConvertFromDB" => array(__CLASS__, "ConvertFromDB"),
-            "GetLength" =>array(__CLASS__, "GetLength"),
-            "PrepareSettings" =>array(__CLASS__, "PrepareSettings"),
+            "GetLength" => array(__CLASS__, "GetLength"),
+            "PrepareSettings" => array(__CLASS__, "PrepareSettings"),
             "GetUIFilterProperty" => array(__CLASS__, "GetUIFilterProperty"),
             "GetSettingsHTML" => array(__CLASS__, "GetSettingsHTML"),
             "GetDBColumnType" =>  array(__CLASS__, "GetDBColumnType"),
@@ -51,10 +54,9 @@ class IBlockField {
         if (!is_array($value["VALUE"]))
             $value = static::ConvertFromDB($arProperty, $value);
         $ar = $value["VALUE"];
-        if (!empty($ar) && is_array($ar))
-        {
+        if (!empty($ar) && is_array($ar)) {
             if (isset($strHTMLControlName['MODE']) && $strHTMLControlName['MODE'] == 'CSV_EXPORT')
-                return '['.$ar["TYPE"].']'.$ar["TEXT"];
+                return '[' . $ar["TYPE"] . ']' . $ar["TEXT"];
             elseif (isset($strHTMLControlName['MODE']) && $strHTMLControlName['MODE'] == 'SIMPLE_TEXT')
                 return ($ar["TYPE"] == 'HTML' ? strip_tags($ar["TEXT"]) : $ar["TEXT"]);
             else
@@ -66,11 +68,11 @@ class IBlockField {
 
     public static function GetAdminListViewHTML($arProperty, $value, $strHTMLControlName)
     {
-        if(!is_array($value["VALUE"]))
+        if (!is_array($value["VALUE"]))
             $value = static::ConvertFromDB($arProperty, $value);
         $ar = $value["VALUE"];
-        if($ar)
-            return htmlspecialcharsEx($ar["TYPE"].":".$ar["TEXT"]);
+        if ($ar)
+            return htmlspecialcharsEx($ar["TYPE"] . ":" . $ar["TEXT"]);
         else
             return "&nbsp;";
     }
@@ -84,8 +86,11 @@ class IBlockField {
         return  $s;
     }
 
-    public static function GetSettingsHTML($arProperty, $strHTMLControlName, &$arPropertyFields) {
-        $propType = array_key_exists('USER_TYPE_SETTINGS', $arProperty) ? 'USER_TYPE_SETTINGS' : 'SETTINGS';
+    public static function GetSettingsHTML($arProperty, $strHTMLControlName, &$arPropertyFields)
+    {
+        $propType = !empty($arProperty) && array_key_exists('USER_TYPE_SETTINGS', $arProperty)
+            ? 'USER_TYPE_SETTINGS' : 'SETTINGS';
+            
         $arPropertyFields = array(
             "HIDE" => array("FILTRABLE", "ROW_COUNT", "COL_COUNT", "DEFAULT_VALUE"), //will hide the field
             "SET" => array("FILTRABLE" => "N"), //if set then hidden field will get this value
@@ -94,15 +99,15 @@ class IBlockField {
         $configFinder = new \Gtd\VueEditor\Block\Finder();
         $blockConfig = $configFinder->find();
         $option = "";
-        foreach ($blockConfig as $config){
+        foreach ($blockConfig as $config) {
             $selected = in_array($config->getType(), $arProperty[$propType]['ALLOW_BLOCK'] ?? []) ? "selected" : "";
-            $option .= "<option ".$selected." value='".$config->getType()."'>".$config->getTitle()."</option>";
+            $option .= "<option " . $selected . " value='" . $config->getType() . "'>" . $config->getTitle() . "</option>";
         }
         return '
         <tr>
             <td>Доступные блоки:</td>
             <td>
-                <select size="10" multiple="multiple" name="'.$strHTMLControlName["NAME"].'[ALLOW_BLOCK][]">'.$option.'</select>
+                <select size="10" multiple="multiple" name="' . $strHTMLControlName["NAME"] . '[ALLOW_BLOCK][]">' . $option . '</select>
             </td>
         </tr>';
     }
@@ -131,10 +136,10 @@ class IBlockField {
         global $APPLICATION;
         $editor = new Editor();
         $editor->setPropertyId($arProperty['ID']);
-        if($value['VALUE']){
+        if ($value['VALUE']) {
             $editor->setValue($value['VALUE']);
         }
-        if(!empty($arProperty['USER_TYPE_SETTINGS']['ALLOW_BLOCK'])){
+        if (!empty($arProperty['USER_TYPE_SETTINGS']['ALLOW_BLOCK'])) {
             $editor->setAllowBlocks($arProperty['USER_TYPE_SETTINGS']['ALLOW_BLOCK']);
         }
         $editor
@@ -183,27 +188,20 @@ class IBlockField {
     public static function CheckArray($arFields = false, $defaultValue = false)
     {
         $defaultValue = ($defaultValue === true);
-        if (!is_array($arFields))
-        {
+        if (!is_array($arFields)) {
             $return = false;
             if (CheckSerializedData($arFields))
                 $return = unserialize($arFields);
-        }
-        else
-        {
+        } else {
             $return = $arFields;
         }
 
-        if ($return)
-        {
-            if (is_set($return, "TEXT") && ((strlen(trim($return["TEXT"])) > 0) || $defaultValue))
-            {
+        if ($return) {
+            if (is_set($return, "TEXT") && ((strlen(trim($return["TEXT"])) > 0) || $defaultValue)) {
                 $return["TYPE"] = strtoupper($return["TYPE"]);
                 if (($return["TYPE"] != "TEXT") && ($return["TYPE"] != "HTML"))
                     $return["TYPE"] = "HTML";
-            }
-            else
-            {
+            } else {
                 $return = false;
             }
         }
@@ -212,7 +210,7 @@ class IBlockField {
 
     public static function GetLength($arProperty, $value)
     {
-        if(is_array($value) && isset($value["VALUE"]["TEXT"]))
+        if (is_array($value) && isset($value["VALUE"]["TEXT"]))
             return strlen(trim($value["VALUE"]["TEXT"]));
         else
             return 0;
@@ -220,14 +218,14 @@ class IBlockField {
 
     public static function PrepareSettings($arProperty)
     {
-//        $settings = $arProperty['USER_TYPE_SETTINGS'];
-//        $newsettings = array();
-//
-//        foreach (array('DISABLE_CHANGE', 'ENABLE_SORT_BUTTONS','SETTINGS_NAME') as $val){
-//            $newsettings[$val] = !empty($settings[$val]) ? $settings[$val] : '';
-//        }
-//
-//        return array('USER_TYPE_SETTINGS' => $newsettings);
+        //        $settings = $arProperty['USER_TYPE_SETTINGS'];
+        //        $newsettings = array();
+        //
+        //        foreach (array('DISABLE_CHANGE', 'ENABLE_SORT_BUTTONS','SETTINGS_NAME') as $val){
+        //            $newsettings[$val] = !empty($settings[$val]) ? $settings[$val] : '';
+        //        }
+        //
+        //        return array('USER_TYPE_SETTINGS' => $newsettings);
 
         $propType = array_key_exists('USER_TYPE_SETTINGS', $arProperty) ? 'USER_TYPE_SETTINGS' : 'SETTINGS';
         return  $arProperty[$propType];
@@ -254,28 +252,23 @@ class IBlockField {
         $getFull = ($getFull === true);
         $valueType = 'HTML';
         $value = (string)$value;
-        if ($value !== '')
-        {
+        if ($value !== '') {
             $prefix = strtoupper(substr($value, 0, 6));
             $isText = $prefix == '[TEXT]';
-            if ($prefix == '[HTML]' || $isText)
-            {
+            if ($prefix == '[HTML]' || $isText) {
                 if ($isText)
                     $valueType = 'TEXT';
                 $value = substr($value, 6);
             }
         }
-        if ($getFull)
-        {
+        if ($getFull) {
             return array(
                 'VALUE' => array(
                     'TEXT' => $value,
                     'TYPE' => $valueType
                 )
             );
-        }
-        else
-        {
+        } else {
             return array(
                 'TEXT' => $value,
                 'TYPE' => $valueType
