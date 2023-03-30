@@ -157,7 +157,7 @@ class IBlockField
     }
 
     // для uf-поля
-    public static function OnBeforeSave($arProperty, $value, $user_id)
+    public static function OnBeforeSave($arProperty, $value)
     {
         $value = self::ConvertToDB($arProperty, ['VALUE' => $value]);
         return $value['VALUE'];
