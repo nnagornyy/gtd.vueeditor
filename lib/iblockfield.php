@@ -66,7 +66,7 @@ class IBlockField
         return '';
     }
 
-    public static function GetAdminListViewHTML($arProperty, $value, $strHTMLControlName)
+    public static function GetAdminListViewHTML($arProperty, $value, $strHTMLControlName = '')
     {
         if (!is_array($value["VALUE"]))
             $value = static::ConvertFromDB($arProperty, $value);
@@ -157,7 +157,7 @@ class IBlockField
     }
 
     // для uf-поля
-    public static function OnBeforeSave($arProperty, $value, $user_id)
+    public static function OnBeforeSave($arProperty, $value, $user_id = 0)
     {
         $value = self::ConvertToDB($arProperty, ['VALUE' => $value]);
         return $value['VALUE'];
