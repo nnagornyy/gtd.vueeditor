@@ -69,9 +69,9 @@ class BlockConfig{
     }
 
     /**
-     * @return string[]
+     * @return \stdClass
      */
-    public function getParams(): array
+    public function getParams(): \stdClass
     {
         return $this->params;
     }
