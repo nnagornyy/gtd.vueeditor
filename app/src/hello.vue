@@ -16,10 +16,10 @@
         >
           <el-card :key="i" shadow="hover" class="block-wrapper" v-for="(block, i) in result">
             <el-row class="block-header">
-              <el-col :span="20">
-                <el-divider class="block-header-name" content-position="left">{{block.name}}</el-divider>
+              <el-col :span="16">
+                <el-divider class="block-header-name" content-position="left">{{block.name}} <span v-if="block.code">({{block.code}})</span></el-divider>
               </el-col>
-              <el-col :span="4" class="block-actions">
+              <el-col :span="8" class="block-actions">
                 <div class="block-action" v-if="result[i-1]">
                   <span @click="moveUp(i)"><i class="el-icon-sort-up"></i></span>
                 </div>
@@ -28,6 +28,23 @@
                 </div>
                 <div class="block-action">
                   <span class="handle"> <i class="el-icon-rank"></i></span>
+                </div>
+                <div class="block-action">
+                  <el-popover
+                      placement="bottom-end"
+                      trigger="click">
+                    <span slot="default">
+                      <div class="block-params-edit">
+                        <div class="block-param-edit">
+                          <el-divider class="block-param-name" content-position="left">Код блока</el-divider>
+                          <el-input size="mini" v-model="block.code"></el-input>
+                        </div>
+                      </div>
+                    </span>
+                    <span slot="reference">
+                      <i class="el-icon-edit"></i>
+                    </span>
+                  </el-popover>
                 </div>
                 <div class="block-action">
                   <el-dropdown @command="handleBlockCommand">
@@ -154,6 +171,7 @@ export default {
       let blueprint = {
         name: name,
         type: type,
+        code: '',
         data: {}
       }
       this.result.push(blueprint);
@@ -337,4 +355,18 @@ adm-workarea .el-input--mini  input.el-input__inner{
 /*  height: 40px;*/
 /*  background: #f8f8f8;*/
 /*}*/
+
+.block-params-edit{
+  padding: 5px;
+}
+.block-params-edit .block-param-name{
+  margin: 0 0 10px 0;
+}
+.block-params-edit .block-param-name .el-divider__text{
+  padding: 5px;
+  font-size: 12px;
+}
+.block-params-edit .block-param-name .el-divider__text.is-left{
+  left: 10px;
+}
 </style>
