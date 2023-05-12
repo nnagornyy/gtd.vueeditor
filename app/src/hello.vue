@@ -16,10 +16,10 @@
         >
           <el-card :key="i" shadow="hover" class="block-wrapper" v-for="(block, i) in result">
             <el-row class="block-header">
-              <el-col :span="16">
+              <el-col :span="19">
                 <el-divider class="block-header-name" content-position="left">{{block.name}} <span v-if="block.code">({{block.code}})</span></el-divider>
               </el-col>
-              <el-col :span="8" class="block-actions">
+              <el-col :span="5" class="block-actions">
                 <div class="block-action" v-if="result[i-1]">
                   <span @click="moveUp(i)"><i class="el-icon-sort-up"></i></span>
                 </div>
