@@ -39,6 +39,17 @@
                           <el-divider class="block-param-name" content-position="left">Код блока</el-divider>
                           <el-input size="mini" v-model="block.code"></el-input>
                         </div>
+                        <div class="block-param-edit" v-if="config(block).patterns">
+                          <el-divider class="block-param-name" content-position="left">Шаблон отображения</el-divider>
+                          <el-select v-model="block.patternDisplay" placeholder="Шаблон отображения">
+                            <el-option
+                                v-for="(pattern, code) in config(block).patterns"
+                                :key="code"
+                                :label="pattern.label"
+                                :value="code">
+                            </el-option>
+                          </el-select>
+                        </div>
                       </div>
                     </span>
                     <span slot="reference">
@@ -71,11 +82,11 @@
                 style="width: 400px; height: 400px"
                 :src="block.about.img"
                 fit="fill"></el-image>
-            <div slot="reference" class="add-block-btn" @click="addBlock(block.value, block.label)">
+            <div slot="reference" class="add-block-btn" @click="addBlock(block)">
               <span class="add-block-text">{{block.label}}</span>
             </div>
           </el-popover>
-          <div v-else slot="reference" class="add-block-btn" @click="addBlock(block.value, block.label)">
+          <div v-else slot="reference" class="add-block-btn" @click="addBlock(block)">
             <span class="add-block-text">{{block.label}}</span>
           </div>
         </div>
@@ -173,10 +184,11 @@ export default {
       this.result.splice(i, 1);
       this.forceRender();
     },
-    addBlock(type, name = ""){
+    addBlock(block){
       let blueprint = {
-        name: name,
-        type: type,
+        name: block.label,
+        type: block.value,
+        patternDisplay: '',
         code: '',
         data: {}
       }
