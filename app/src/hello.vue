@@ -60,7 +60,7 @@
                 </div>
               </el-col>
             </el-row>
-            <component :is="block.type" v-model="block.data" :blockValue="block.data"></component>
+            <component :is="block.type" v-model="block.data" :blockValue="block.data" :blockConfig="config(block)"></component>
           </el-card>
         </draggable>
       </el-col>
@@ -117,7 +117,13 @@ export default {
     }
   },
   methods:{
-    config(block){},
+    config(block){
+      let blockConfig = this.availableBlock.find((b) => {
+        return b.value === block.type;
+      })
+
+      return blockConfig.config
+    },
     handleBlockCommand(a){
       if(a.action == 'save'){
         this.savePreset(a.index);
@@ -230,6 +236,7 @@ export default {
             label: b.config.name,
             value: b.componentName,
             about: b.config.conf.about,
+            config: b.config.conf
           })
       })
       return blocks;
