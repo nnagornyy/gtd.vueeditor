@@ -17,7 +17,11 @@
           <el-card :key="i" shadow="hover" class="block-wrapper" v-for="(block, i) in result">
             <el-row class="block-header">
               <el-col :span="19">
-                <el-divider class="block-header-name" content-position="left">{{block.name}} <span v-if="block.code">({{block.code}})</span></el-divider>
+                <el-divider class="block-header-name" content-position="left">
+                  {{block.name}}
+                  <span v-if="block.code">({{block.code}})</span>
+                  <span v-if="block.patternDisplay">({{ config(block).patterns[block.patternDisplay].label }})</span>
+                </el-divider>
               </el-col>
               <el-col :span="5" class="block-actions">
                 <div class="block-action" v-if="result[i-1]">
