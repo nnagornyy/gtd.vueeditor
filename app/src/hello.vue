@@ -20,7 +20,7 @@
                 <el-divider class="block-header-name" content-position="left">
                   {{block.name}}
                   <span v-if="block.code">({{block.code}})</span>
-                  <span v-if="block.patternDisplay">({{ config(block).patterns[block.patternDisplay].label }})</span>
+                  <span v-if="block.patternDisplay">({{ patternDisplay(block).label }})</span>
                 </el-divider>
               </el-col>
               <el-col :span="5" class="block-actions">
@@ -138,6 +138,11 @@ export default {
       })
 
       return blockConfig.config
+    },
+    patternDisplay(block) {
+      let config = this.config(block);
+
+      return config?.patterns[block.patternDisplay]
     },
     handleBlockCommand(a){
       if(a.action == 'save'){
