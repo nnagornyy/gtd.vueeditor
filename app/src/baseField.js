@@ -1,5 +1,5 @@
 export default {
-    props: ['blockValue'],
+    props: ['blockValue', 'blockConfig'],
     data(){
         return {
             editorData:{

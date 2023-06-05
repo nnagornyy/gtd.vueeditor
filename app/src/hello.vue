@@ -17,7 +17,11 @@
           <el-card :key="i" shadow="hover" class="block-wrapper" v-for="(block, i) in result">
             <el-row class="block-header">
               <el-col :span="19">
-                <el-divider class="block-header-name" content-position="left">{{block.name}} <span v-if="block.code">({{block.code}})</span></el-divider>
+                <el-divider class="block-header-name" content-position="left">
+                  {{block.name}}
+                  <span v-if="block.code">({{block.code}})</span>
+                  <span v-if="block.patternDisplay">({{ patternDisplay(block).label }})</span>
+                </el-divider>
               </el-col>
               <el-col :span="5" class="block-actions">
                 <div class="block-action" v-if="result[i-1]">
@@ -38,6 +42,17 @@
                         <div class="block-param-edit">
                           <el-divider class="block-param-name" content-position="left">Код блока</el-divider>
                           <el-input size="mini" v-model="block.code"></el-input>
+                        </div>
+                        <div class="block-param-edit" v-if="config(block).patterns">
+                          <el-divider class="block-param-name" content-position="left">Шаблон отображения</el-divider>
+                          <el-select v-model="block.patternDisplay" placeholder="Шаблон отображения">
+                            <el-option
+                                v-for="(pattern, code) in config(block).patterns"
+                                :key="code"
+                                :label="pattern.label"
+                                :value="code">
+                            </el-option>
+                          </el-select>
                         </div>
                       </div>
                     </span>
@@ -60,7 +75,7 @@
                 </div>
               </el-col>
             </el-row>
-            <component :is="block.type" v-model="block.data" :blockValue="block.data"></component>
+            <component :is="block.type" v-model="block.data" :blockValue="block.data" :blockConfig="config(block)"></component>
           </el-card>
         </draggable>
       </el-col>
@@ -71,11 +86,11 @@
                 style="width: 400px; height: 400px"
                 :src="block.about.img"
                 fit="fill"></el-image>
-            <div slot="reference" class="add-block-btn" @click="addBlock(block.value, block.label)">
+            <div slot="reference" class="add-block-btn" @click="addBlock(block)">
               <span class="add-block-text">{{block.label}}</span>
             </div>
           </el-popover>
-          <div v-else slot="reference" class="add-block-btn" @click="addBlock(block.value, block.label)">
+          <div v-else slot="reference" class="add-block-btn" @click="addBlock(block)">
             <span class="add-block-text">{{block.label}}</span>
           </div>
         </div>
@@ -117,7 +132,18 @@ export default {
     }
   },
   methods:{
-    config(block){},
+    config(block){
+      let blockConfig = this.availableBlock.find((b) => {
+        return b.value === block.type;
+      })
+
+      return blockConfig.config
+    },
+    patternDisplay(block) {
+      let config = this.config(block);
+
+      return config?.patterns[block.patternDisplay]
+    },
     handleBlockCommand(a){
       if(a.action == 'save'){
         this.savePreset(a.index);
@@ -167,10 +193,11 @@ export default {
       this.result.splice(i, 1);
       this.forceRender();
     },
-    addBlock(type, name = ""){
+    addBlock(block){
       let blueprint = {
-        name: name,
-        type: type,
+        name: block.label,
+        type: block.value,
+        patternDisplay: '',
         code: '',
         data: {}
       }
@@ -230,6 +257,7 @@ export default {
             label: b.config.name,
             value: b.componentName,
             about: b.config.conf.about,
+            config: b.config.conf
           })
       })
       return blocks;
