@@ -71,7 +71,7 @@ class IBlockField
         if (!is_array($value["VALUE"]))
             $value = static::ConvertFromDB($arProperty, $value);
         $ar = $value["VALUE"];
-        if ($ar)
+        if ($ar && isset($ar["TYPE"]) && isset($ar["TEXT"]))
             return htmlspecialcharsEx($ar["TYPE"] . ":" . $ar["TEXT"]);
         else
             return "&nbsp;";
