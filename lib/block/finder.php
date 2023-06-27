@@ -1,4 +1,5 @@
 <?php
+
 namespace Gtd\VueEditor\Block;
 
 use RecursiveDirectoryIterator;
@@ -6,7 +7,8 @@ use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
 use RegexIterator;
 
-class Finder {
+class Finder
+{
 
     const DEFAULT_PATH = 'default';
 
@@ -27,16 +29,16 @@ class Finder {
     private function getBlockPaths(): array
     {
         $paths = [
-            self::DEFAULT_PATH => $_SERVER['DOCUMENT_ROOT'].'/local/modules/gtd.vueeditor/app/src/block',
-            self::EXTERNAL_PATH => $_SERVER['DOCUMENT_ROOT'].'/local/modules/gtd.vueeditor/app/src/ext_block',
+            self::DEFAULT_PATH => $_SERVER['DOCUMENT_ROOT'] . '/local/modules/gtd.vueeditor/app/src/block',
+            self::EXTERNAL_PATH => $_SERVER['DOCUMENT_ROOT'] . '/local/modules/gtd.vueeditor/app/src/ext_block',
         ];
-        if($this->externalPathRewrite != ""){
+        if ($this->externalPathRewrite != "") {
             $paths[self::EXTERNAL_PATH] = $this->externalPathRewrite;
         }
         return $paths;
     }
 
-    public static function getExtBlockPath():string
+    public static function getExtBlockPath(): string
     {
         $ob = new self();
         $paths = $ob->getBlockPaths();
@@ -52,9 +54,9 @@ class Finder {
         $paths = [];
         $availablePath = $this->getBlockPaths();
 
-        if($where === self::DEFAULT_PATH || $where === self::EXTERNAL_PATH){
+        if ($where === self::DEFAULT_PATH || $where === self::EXTERNAL_PATH) {
             $paths[] = $availablePath[$where];
-        }else{
+        } else {
             return $availablePath;
         }
         return $paths;
@@ -62,18 +64,21 @@ class Finder {
 
     /**
      * @param $where string all | default | external
-     * @return \Gtd\VueEditor\Block\BlockConfig []
+     * @return BlockConfig []
      */
     public function find(string $where = 'all'): array
     {
         $arConfigPath = [];
         $arConfig = [];
         $rootPaths = $this->getSearchPath($where);
-        foreach ($rootPaths as $rootPath){
+        foreach ($rootPaths as $rootType => $rootPath) {
+            if ($rootType === $this::EXTERNAL_PATH && !is_dir($rootPath)) {
+                continue;
+            }
             $arConfigPath = array_merge($arConfigPath, $this->iterationFindConfigPath($rootPath));
         }
-        if(!empty($arConfigPath)){
-            foreach ($arConfigPath as $configPath){
+        if (!empty($arConfigPath)) {
+            foreach ($arConfigPath as $configPath) {
                 $arConfig[] = $this->getBlockConfigByFile($configPath);
             }
         }
@@ -90,7 +95,7 @@ class Finder {
         $directory = new RecursiveDirectoryIterator($path);
         $iterator = new RecursiveIteratorIterator($directory);
         $regex = new RegexIterator($iterator, '/^.+\.conf.json$/i', RecursiveRegexIterator::GET_MATCH);
-        foreach($regex  as $file){
+        foreach ($regex as $file) {
             $configPaths[] = $file[0];
         }
         return $configPaths;
@@ -98,14 +103,15 @@ class Finder {
 
     /**
      * @param $path
-     * @return \Gtd\VueEditor\Block\BlockConfig|null
+     * @return BlockConfig|null
      */
-    private function getBlockConfigByFile($path){
-        if(is_file($path)){
+    private function getBlockConfigByFile($path)
+    {
+        if (is_file($path)) {
             $raw = file_get_contents($path);
             $json = json_decode($raw);
-            return new \Gtd\VueEditor\Block\BlockConfig($json);
+            return new BlockConfig($json);
         }
-        return  null;
+        return null;
     }
 }
