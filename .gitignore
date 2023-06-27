@@ -1,2 +1,3 @@
 /app/node_modules/
-/app/src/ex_block/*
+/app/src/ext_block/*
+/.idea
