@@ -15,7 +15,7 @@ class IBlockField {
 
     const USER_TYPE = 'BlockEditor';
 
-    public function GetUserTypeDescription(){
+    public static function GetUserTypeDescription(){
         return [
             "CLASS_NAME" => __CLASS__,
             "BASE_TYPE" => \CUserTypeManager::BASE_TYPE_STRING,
