@@ -11,7 +11,8 @@ use function Symfony\Component\Translation\t;
  * Class IBlockField
  * @package Gtd\VueEditor
  */
-class IBlockField {
+class IBlockField
+{
 
     const USER_TYPE = 'BlockEditor';
 
@@ -85,7 +86,9 @@ class IBlockField {
     }
 
     public static function GetSettingsHTML($arProperty, $strHTMLControlName, &$arPropertyFields) {
+        $arProperty = is_array($arProperty) ? $arProperty : [];
         $propType = array_key_exists('USER_TYPE_SETTINGS', $arProperty) ? 'USER_TYPE_SETTINGS' : 'SETTINGS';
+        $settings = (array)($arProperty[$propType] ?: []);
         $arPropertyFields = array(
             "HIDE" => array("FILTRABLE", "ROW_COUNT", "COL_COUNT", "DEFAULT_VALUE"), //will hide the field
             "SET" => array("FILTRABLE" => "N"), //if set then hidden field will get this value
@@ -94,8 +97,9 @@ class IBlockField {
         $configFinder = new \Gtd\VueEditor\Block\Finder();
         $blockConfig = $configFinder->find();
         $option = "";
+        $allowBlocks = (array)($settings['ALLOW_BLOCK'] ?: []);
         foreach ($blockConfig as $config){
-            $selected = in_array($config->getType(), $arProperty[$propType]['ALLOW_BLOCK']) ? "selected" : "";
+            $selected = in_array($config->getType(), $allowBlocks) ? "selected" : "";
             $option .= "<option ".$selected." value='".$config->getType()."'>".$config->getTitle()."</option>";
         }
         return '
