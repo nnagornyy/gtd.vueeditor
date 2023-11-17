@@ -69,8 +69,8 @@ class Editor {
      */
     private function getJsFile(){
         $assetFiles = scandir($this->getAssetDir());
-        return array_filter($assetFiles, function ($arr1){
-            return stripos($arr1,'.js');
+        return array_filter((array)$assetFiles, function ($filePath){
+            return stripos($filePath, '.js');
         });
     }
 
