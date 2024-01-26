@@ -10,7 +10,7 @@
       data(){
         return {
           editorData:"",
-          customToolbar: [["bold", "italic", "underline"]]
+          customToolbar: [["bold", "underline"]]
         }
       }
     }
