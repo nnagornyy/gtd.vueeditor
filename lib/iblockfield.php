@@ -69,10 +69,24 @@ class IBlockField {
         if(!is_array($value["VALUE"]))
             $value = static::ConvertFromDB($arProperty, $value);
         $ar = $value["VALUE"];
-        if($ar)
-            return htmlspecialcharsEx($ar["TYPE"].":".$ar["TEXT"]);
-        else
-            return "&nbsp;";
+        if($ar) {
+            if (is_array($ar)) {
+                return htmlspecialcharsEx($ar["TYPE"].":".$ar["TEXT"]);
+            }
+            if (is_string($ar)) {
+                $json = json_decode($ar, true);
+                $text = [];
+                foreach($json as $line) {
+                    if (is_array($line['data'])) {
+                        continue;
+                    }
+                    $text[] = $line['data'];
+                }
+                return implode("<br>", $text);
+            }
+        }
+        
+        return "&nbsp;";
     }
 
     public static function GetPublicEditHTML($arProperty, $value, $strHTMLControlName)
